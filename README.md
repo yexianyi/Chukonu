@@ -16,10 +16,10 @@
 ## cho-ko-nu repository
 
 cho-ko-nu is an Open Source ([Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)) library contains many utilities that could facilitate daily development for developers.
-In order to well organize this library, each of tools is maintained at separate branch.
+In order to well organize this library, each of tools is maintained at an independent folder.
 For any question or issue, please feel free to contact me. 
 
-Thanks,
-Xianyi Ye
-yexianyi@hotmail.com
+Thanks,</br>
+Xianyi Ye</br>
+yexianyi@hotmail.com</br>
 
