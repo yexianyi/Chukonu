@@ -1,0 +1,23 @@
+Issue:
+
+When you set up a Salt Master server and several Minions, you may find that none of minions could be seen by master. 
+
+
+nc -v -z salt.master.ip.addr 4505
+nc: connect to 10.61.22.98 port 4505 (tcp) failed: No route to host
+
+
+
+
+
+Reason:
+
+The firewall on Salt Master might block the incoming request from minions.
+
+ 
+
+Solution:
+
+Invoke following command on Master server to change firewall policy. 
+
+lokkit -p 22:tcp -p 4505:tcp -p 4506:tcp

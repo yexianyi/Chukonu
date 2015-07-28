@@ -1,0 +1,85 @@
+Issue:
+
+When you deploy and run Arquillian testcase, you may encountered java.lang.NoClassDefFoundError exception like following.
+
+ 
+
+Exception:
+
+15:07:54,364 INFO  [org.jboss.as.repository] (management-handler-thread - 13) JBAS014900: Content added at location D:\jboss\standalone\data\content\f4\db8b058b61b2509e8ed692bacb90d9641b5b4e\content
+ 15:07:54,366 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) JBAS015876: Starting deployment of "test.war"
+ 15:07:57,922 INFO  [org.jboss.as.jpa] (MSC service thread 1-9) JBAS011401: Read persistence.xml for primary
+ 15:07:57,931 INFO  [org.jboss.weld.deployer] (MSC service thread 1-8) JBAS016002: Processing weld deployment test.war
+ 15:07:57,932 INFO  [org.jboss.as.ejb3.deployment.processors.EjbJndiBindingsDeploymentUnitProcessor] (MSC service thread 1-8) JNDI bindings for session bean named BirdRegistration in deployment unit deployment "test.war" are as follows:
+
+ java:global/test/BirdRegistration!net.mytest.xye.service.BirdRegistration
+  java:app/test/BirdRegistration!net.mytest.xye.service.BirdRegistration
+  java:module/BirdRegistration!net.mytest.xye.service.BirdRegistration
+  java:global/test/BirdRegistration
+  java:app/test/BirdRegistration
+  java:module/BirdRegistration
+
+15:07:57,941 INFO  [org.jboss.weld.deployer] (MSC service thread 1-1) JBAS016005: Starting Services for CDI deployment: test.war
+ 15:07:57,942 INFO  [org.jboss.as.jpa] (MSC service thread 1-12) JBAS011402: Starting Persistence Unit Service 'test.war#primary'
+ 15:07:57,943 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-3) JBAS010400: Bound data source [jboss/datasources/XYE-webapp5TestDS]
+ 15:07:57,944 INFO  [org.hibernate.ejb.Ejb3Configuration] (MSC service thread 1-12) HHH000204: Processing PersistenceUnitInfo [
+  name: primary
+  ...]
+ 15:07:57,949 ERROR [org.jboss.msc.service.fail] (MSC service thread 1-12) MSC00001: Failed to start service jboss.persistenceunit."test.war#primary": org.jboss.msc.service.StartException in service jboss.persistenceunit."test.war#primary": Failed to start service
+  at org.jboss.msc.service.ServiceControllerImpl$StartTask.run(ServiceControllerImpl.java:1767) [jboss-msc-1.0.2.GA.jar:1.0.2.GA]
+  at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source) [rt.jar:1.6.0_35]
+  at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [rt.jar:1.6.0_35]
+  at java.lang.Thread.run(Unknown Source) [rt.jar:1.6.0_35]
+ Caused by: java.lang.NoClassDefFoundError: net/mytest/xye/model/Sighting
+  at java.lang.Class.getDeclaredMethods0(Native Method) [rt.jar:1.6.0_35]
+  at java.lang.Class.privateGetDeclaredMethods(Unknown Source) [rt.jar:1.6.0_35]
+  at java.lang.Class.getDeclaredMethods(Unknown Source) [rt.jar:1.6.0_35]
+  at org.hibernate.annotations.common.reflection.java.JavaXClass.getDeclaredMethodProperties(JavaXClass.java:112)
+  at org.hibernate.annotations.common.reflection.java.JavaXClass.getDeclaredProperties(JavaXClass.java:129)
+  at org.hibernate.annotations.common.reflection.java.JavaXClass.getDeclaredProperties(JavaXClass.java:121)
+  at org.hibernate.cfg.InheritanceState.determineDefaultAccessType(InheritanceState.java:262)
+  at org.hibernate.cfg.InheritanceState.getElementsToProcess(InheritanceState.java:224)
+  at org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:663)
+  at org.hibernate.cfg.Configuration$MetadataSourceQueue.processAnnotatedClassesQueue(Configuration.java:3406)
+  at org.hibernate.cfg.Configuration$MetadataSourceQueue.processMetadata(Configuration.java:3360)
+  at org.hibernate.cfg.Configuration.secondPassCompile(Configuration.java:1334)
+  at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1724)
+  at org.hibernate.ejb.EntityManagerFactoryImpl.<init>(EntityManagerFactoryImpl.java:84)
+  at org.hibernate.ejb.Ejb3Configuration.buildEntityManagerFactory(Ejb3Configuration.java:904)
+  at org.hibernate.ejb.Ejb3Configuration.buildEntityManagerFactory(Ejb3Configuration.java:889)
+  at org.hibernate.ejb.HibernatePersistence.createContainerEntityManagerFactory(HibernatePersistence.java:73)
+  at org.jboss.as.jpa.service.PersistenceUnitServiceImpl.createContainerEntityManagerFactory(PersistenceUnitServiceImpl.java:162)
+  at org.jboss.as.jpa.service.PersistenceUnitServiceImpl.start(PersistenceUnitServiceImpl.java:85)
+  at org.jboss.msc.service.ServiceControllerImpl$StartTask.startService(ServiceControllerImpl.java:1811) [jboss-msc-1.0.2.GA.jar:1.0.2.GA]
+  at org.jboss.msc.service.ServiceControllerImpl$StartTask.run(ServiceControllerImpl.java:1746) [jboss-msc-1.0.2.GA.jar:1.0.2.GA]
+  ... 3 more
+Caused by: java.lang.ClassNotFoundException: net.mytest.xye.model.Sighting from [Module "deployment.test.war:main" from Service Module Loader]
+  at org.jboss.modules.ModuleClassLoader.findClass(ModuleClassLoader.java:190) [jboss-modules.jar:1.1.1.GA]
+  at org.jboss.modules.ConcurrentClassLoader.performLoadClassUnchecked(ConcurrentClassLoader.java:468) [jboss-modules.jar:1.1.1.GA]
+  at org.jboss.modules.ConcurrentClassLoader.performLoadClassChecked(ConcurrentClassLoader.java:456) [jboss-modules.jar:1.1.1.GA]
+  at org.jboss.modules.ConcurrentClassLoader.performLoadClassChecked(ConcurrentClassLoader.java:423) [jboss-modules.jar:1.1.1.GA]
+  at org.jboss.modules.ConcurrentClassLoader.performLoadClass(ConcurrentClassLoader.java:398) [jboss-modules.jar:1.1.1.GA]
+  at org.jboss.modules.ConcurrentClassLoader.loadClass(ConcurrentClassLoader.java:120) [jboss-modules.jar:1.1.1.GA]
+  ... 24 more
+
+15:07:58,166 INFO  [org.jboss.as.server] (management-handler-thread - 13) JBAS015870: Deploy of deployment "test.war" was rolled back with failure message {"JBAS014671: Failed services" => {"jboss.persistenceunit.\"test.war#primary\"" => "org.jboss.msc.service.StartException in service jboss.persistenceunit.\"test.war#primary\": Failed to start service"}}
+ 15:07:58,174 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-9) JBAS010409: Unbound data source [jboss/datasources/XYE-webapp5TestDS]
+ 15:07:58,194 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-9) JBAS015877: Stopped deployment test.war in 28ms
+ 15:07:58,194 INFO  [org.jboss.as.controller] (management-handler-thread - 13) JBAS014774: Service status report
+ JBAS014777:   Services which failed to start:      service jboss.persistenceunit."test.war#primary": org.jboss.msc.service.StartException in service jboss.persistenceunit."test.war#primary": Failed to start service
+
+ 
+
+Solution:
+
+Please add missed class 'Sighting.class' to TestArchive, such as
+
+   @Deployment
+   public static Archive<?> createTestArchive() {
+      return ShrinkWrap.create(WebArchive.class, "test.war")
+            .addClasses(Bird.class, Sighting.class, BirdRegistration.class, Resources.class)
+            .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            // Deploy our test datasource
+            .addAsWebInfResource("test-ds.xml", "test-ds.xml");
+   }
