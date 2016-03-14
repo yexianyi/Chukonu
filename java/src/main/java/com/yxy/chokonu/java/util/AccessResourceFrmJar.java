@@ -1,4 +1,4 @@
-package com.yxy.chokonu.java;
+package com.yxy.chokonu.java.util;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package com.yxy.chokonu.java;
+package com.yxy.chokonu.java.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
