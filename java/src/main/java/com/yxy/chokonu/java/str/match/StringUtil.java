@@ -1,4 +1,7 @@
-public static int match(String source, String pattern)
+package com.yxy.chokonu.java.str.match;
+
+public class StringUtil{
+	public static int match(String source, String pattern)
 	{
 	    char[] sourceArray = source.toCharArray() ;
 	    char[] patternArray = pattern.toCharArray() ;
@@ -42,3 +45,7 @@ public static int match(String source, String pattern)
 	    return foundtimes ;
 	    
 	}
+
+}
+
+

@@ -1,4 +1,4 @@
-package com.chokonu.utils;
+package com.yxy.chokonu.java.ping.test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

@@ -1,5 +1,21 @@
-    public List<InputStream> loadWFTempInputStream(String templateDir) {
-       
+package com.yxy.chokonu.java;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+public class AccessResourceFrmJar{
+	public List<InputStream> loadWFTempInputStream(String templateDir) {
+	       
         List<InputStream> list = new ArrayList<InputStream>(); 
         URL url = this.getClass().getProtectionDomain().getCodeSource().getLocation(); 
         
@@ -63,3 +79,6 @@
      
         return list;
     }
+
+}
+
