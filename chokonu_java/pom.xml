@@ -8,11 +8,10 @@
 		<artifactId>chokonu</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.yxy.chokonu</groupId>
-	<artifactId>java</artifactId>
+	<artifactId>chokonu_java</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>java</name>
+	<name>chokonu_java</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

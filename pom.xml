@@ -60,6 +60,6 @@
 		</plugins>
 	</build>
   <modules>
-    <module>java</module>
+    <module>chokonu_java</module>
   </modules>
 </project>
