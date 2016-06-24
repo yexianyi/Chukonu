@@ -64,7 +64,7 @@
 		</plugins>
 	</build>
   <modules>
-    <module>chokonu_java</module>
-    <module>chokonu_amazon_aws_sdk</module>
+    <module>chukonu_java</module>
+    <module>chukonu_amazon_aws_sdk</module>
   </modules>
 </project>
