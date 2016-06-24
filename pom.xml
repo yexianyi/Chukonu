@@ -6,10 +6,10 @@
 		<java.target.level>1.7</java.target.level>
 	</properties>
 	<groupId>com.yxy</groupId>
-	<artifactId>chokonu</artifactId>
+	<artifactId>chukonu</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Cho-Ko-Nu</name>
+	<name>Chu-Ko-Nu</name>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

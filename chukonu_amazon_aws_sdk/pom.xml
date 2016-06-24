@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.yxy</groupId>
-    <artifactId>chokonu</artifactId>
+    <artifactId>chukonu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>chokonu_amazon_aws_sdk</artifactId>
+  <artifactId>chukonu_amazon_aws_sdk</artifactId>
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
