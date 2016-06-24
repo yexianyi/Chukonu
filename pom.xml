@@ -56,6 +56,7 @@
 					<executions>
 						<execution>
 							<goals>
+								<!-- mvn license:format -->
 								<goal>format</goal>
 							</goals>
 						</execution>
