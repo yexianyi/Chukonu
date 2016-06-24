@@ -1,0 +1,6 @@
+HOW TO RUN：
+0. Compile project with "mvn package assembly:single"
+1. java -jar <generated jar name>
+2. Access http://localhost:8080/financialservice/
+3. Fill in Login Form with admin/admin
+4. Click "Login"

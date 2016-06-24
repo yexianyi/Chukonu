@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <title>Financial Service Demo</title>
+	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/demo.css"></link>
+	<script type="text/javascript" src="js/jquery-1.12.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.datagrid-header-inner .datagrid-cell').css("text-align","center"); 
+			$.parser.parse()  ;
+		});
+		
+		function queryNews(){
+			 $('#newsGrid').datagrid('loadData', {"total":0,"rows":[]});
+			 $.ajax({ 
+		       type: "GET",
+		       dataType: "json",
+		       url: "/financialservice/api/admin/info/list",
+		       data:{"symbol":$("#symbol").val()},
+		       success: function(data){ 
+		          //$('#queryResults').text(JSON.stringify(data)) ;
+		       	var jsonstr = '{"total":'+eval(data.rss.channel.item).length+',"rows":'+JSON.stringify(data.rss.channel.item)+'}'; 
+		       	//$('#queryResults').text(JSON.stringify(jsonstr)) ;
+		       	var content = $.parseJSON(jsonstr);    
+		       	 $('#newsGrid').datagrid('loadData', content); 
+		
+		       },
+		        error: function (msg, url, line) {
+		            alert('msg = ' + JSON.stringify(msg) + ', url = ' + url + ', line = ' + line);
+		        }
+		   }); 
+		}
+		
+		function submitForm(){
+			
+			$.ajax({ 
+		        type: "POST",
+		        url: "/financialservice/api/admin/info/calProfit",
+		        dataType: 'json',
+		        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		        data: JSON.stringify({
+		            "outcome": $("#outcome").val(),
+		            "income": $("#income").val(),
+		            "duration": $("#duration").val(),
+		            "baseYear": $("#baseYear").val(),
+		        }),
+		        success: function(data){ 
+		        	$('#ri').text(data.RI) ;
+		        	$('#roe').text(data.ROE) ;
+		
+		        },
+		         error: function (msg, url, line) {
+		             alert('ERROR = ' + JSON.stringify(msg) + ', url = ' + url + ', line = ' + line);
+		         }
+		    }); 
+		}
+		
+		function clearForm(){
+		    $('#calForm').form('clear');
+		}
+	</script>
+
+</head>
+<body>
+	<h2 align="center">Financial Service Demo</h2>
+
+	<div style="margin:20px 0 10px 0;"></div>
+    <div class="easyui-tabs" style="width:1200px;height:550px;margin-left:auto;margin-right:auto;">
+        <div title="Latest News" style="padding:10px">
+            <p style="font-size:14px">This service will show you the latest company news.</p>
+            <p>Please input company symbol:
+            <input class="easyui-textbox" id="symbol" data-options="buttonText:'SEARCH',prompt:'Search...(Example:ms)',onClickButton:function(){queryNews()}" style="width:250px;height:32px;">
+			</p>
+			<p id="queryResults"></p>
+			
+			<table id="newsGrid" class="easyui-datagrid" title="Basic DataGrid" style="width:100%;height:80%"
+            data-options="singleSelect:true,collapsible:true">
+		        <thead>
+		            <tr>
+		                <th data-options="field:'title',width:400,align:'left'">Title</th>
+		                <th data-options="field:'link',width:500,align:'left'">Link</th>
+		                <th data-options="field:'pubDate',width:200,align:'left'">Publish Date</th>
+		            </tr>
+		        </thead>
+		    </table>
+			
+			
+        </div>
+        <div title="Profit Calculator" style="padding:10px">
+            <div style="padding:10px 60px 20px 60px">
+              
+		        <form id="calForm">
+		            <table cellpadding="5">
+		                <tr>
+		                    <td>Outcome:</td>
+		                    <td><input class="easyui-textbox" type="text" id="outcome" data-options="required:true,min:0,precision:2"></input>
+		                    (Eg. 10000)</td>
+		                </tr>
+		                <tr>
+		                    <td>Income:</td>
+		                    <td><input class="easyui-textbox" type="text" id="income" data-options="required:true,min:0,precision:2"></input>
+		                    (Eg. 10400)</td>
+		                </tr>
+		                <tr>
+		                    <td>Duration:</td>
+		                    <td><input class="easyui-textbox" type="text" id="duration" data-options="required:true,min:0,precision:0"></input>
+		                    (Eg. 90)</td>
+		                </tr>
+		                <tr>
+		                    <td>Base Year:</td>
+		                    <td>
+		                        <select class="easyui-combobox" id="baseYear" data-options="required:true,width:100">
+		                        	<option value="360">360</option>
+		                        	<option value="365" selected="true">365</option>
+		                        </select>
+		                    </td>
+		                </tr>
+		            </table>
+		            
+		             <table cellpadding="5">
+			        	<tr>
+			        		<td>Real Income:</td><td><p id="ri"></p></td>
+			        	</tr>
+			        	<tr>
+			        		<td>Return On Equity:</td><td><p id="roe"></p></td>
+			        	</tr>
+			        	<tr>
+			        		<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a></td>
+			        		<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a></td>
+			        	</tr>
+		        	</table>
+		        </form>
+		    </div>
+	        
+		  </div>
+        
+        <div title="Help" data-options="iconCls:'icon-help',closable:true" style="padding:10px">
+            This is the help content.
+        </div>
+    </div>
+
+</body>
+
+
+</html>

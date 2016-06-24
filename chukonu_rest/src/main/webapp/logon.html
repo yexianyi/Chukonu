@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <title>Financial Service Demo</title>
+	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/demo.css"></link>
+	<script type="text/javascript" src="js/jquery-1.12.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$.parser.parse(); 
+		});
+	</script>
+	
+</head>
+	<body>
+	 <div style="position:relative;right:100px;bottom:-50px;float:right">
+		<div id="loginDiv" class="easyui-panel" title="Login" style="width:300px;padding:10px;">
+	        <form id="ff" action="j_security_check" method="post">
+	            <table>
+	                <tr>
+	                    <td>Username:</td>
+	                    <td><input class="f1 easyui-textbox" size="12" value="" name="j_username" maxlength="25" type="text"/></td>
+	                </tr>
+	                <tr>
+	                    <td>Password:</td>
+	                    <td><input class="f1 easyui-textbox" size="12" value="" name="j_password" maxlength="25" type="password"/></td>
+	                </tr>
+	                <tr>
+	                    <td></td>
+	                    <td><input name="submit" type="submit" value="Login"></input>&nbsp;&nbsp;&nbsp;(admin/admin)</td>
+	                </tr>
+	            </table>
+	        </form>
+	    </div>
+	</div>    
+	    <style>
+	        .f1{
+	            width:200px;
+	        }
+		</style>
+	</body>
+</html>
