@@ -11,7 +11,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Cho-Ko-Nu</name>
 	<dependencies>
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -61,5 +65,6 @@
 	</build>
   <modules>
     <module>chokonu_java</module>
+    <module>chokonu_amazon_aws_sdk</module>
   </modules>
 </project>
