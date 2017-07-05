@@ -18,10 +18,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>com.yxy</groupId>
+	<groupId>net.yxy.rest</groupId>
 	<artifactId>chukonu_rest</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	
 	<!-- FinancialService Maven Webapp -->
 	<name>chukonu_rest</name>
