@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-package com.yxy.chokonu.java.aws.sdk.s3;
+package com.yxy.chukonu.java.aws.sdk.s3;
 
 /*
  * Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.

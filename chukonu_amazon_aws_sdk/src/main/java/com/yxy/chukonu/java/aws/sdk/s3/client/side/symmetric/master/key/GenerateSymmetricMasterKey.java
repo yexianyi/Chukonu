@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-package com.yxy.chokonu.java.aws.sdk.s3.client.side.symmetric.master.key;
+package com.yxy.chukonu.java.aws.sdk.s3.client.side.symmetric.master.key;
 
 import java.io.File;
 import java.io.FileInputStream;

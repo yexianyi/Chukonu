@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-package com.yxy.chokonu.java.aws.sdk.s3.client.side.asymmetric.master.key;
+package com.yxy.chukonu.java.aws.sdk.s3.client.side.asymmetric.master.key;
 
 import static org.junit.Assert.assertTrue;
 

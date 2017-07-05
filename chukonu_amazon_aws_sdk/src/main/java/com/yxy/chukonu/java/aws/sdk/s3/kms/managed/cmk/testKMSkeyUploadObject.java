@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-package com.yxy.chokonu.java.aws.sdk.s3.kms.managed.cmk;
+package com.yxy.chukonu.java.aws.sdk.s3.kms.managed.cmk;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
