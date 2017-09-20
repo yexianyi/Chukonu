@@ -17,7 +17,7 @@
  * limitations under the License.
  *
  */
-package com.yxy.chukonu.java.dp;
+package com.yxy.chukonu.java.dynamic.proxy;
 
 import java.lang.reflect.Method;
 
