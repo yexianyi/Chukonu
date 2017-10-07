@@ -38,7 +38,7 @@ import java.lang.reflect.Method;
  * 
  */
 
-public class DynamicProxy {
+public class DynamicProxyGettingExactExp {
 
 	public Object invoke(Object proxy, Method method, Object[] obj) throws Throwable {
 
@@ -65,6 +65,16 @@ public class DynamicProxy {
 			System.out.println("This is BaseException.");
 
 		}
+	}
+	
+	
+	
+	static class BaseException extends Exception{
+		
+	}
+	
+	static class SubException extends BaseException {
+		
 	}
 
 }
