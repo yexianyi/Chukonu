@@ -1,10 +1,10 @@
 package com.yxy.chukonu.java.dp.observer;
 
-public class Messager implements Observer {
+public class ObserverA implements Observer {
 
 	private String name ;
 	
-	public Messager(String name){
+	public ObserverA(String name){
 		this.name = name ;
 	}
 	

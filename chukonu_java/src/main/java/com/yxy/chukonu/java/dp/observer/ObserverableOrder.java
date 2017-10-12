@@ -1,10 +1,10 @@
 package com.yxy.chukonu.java.dp.observer;
 
-public class Order extends Observerable{
+public class ObserverableOrder extends Observerable{
 
 	private float price ;
 	
-	public Order(float price){
+	public ObserverableOrder(float price){
 		this.price = price ;
 	}
 	
