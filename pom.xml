@@ -68,5 +68,6 @@
     <module>chukonu_java</module>
     <module>chukonu_amazon_aws_sdk</module>
     <module>chukonu_rest</module>
+    <module>chukonu_mybatis</module>
   </modules>
 </project>
