@@ -13,7 +13,7 @@
 		<artifactId>chukonu</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>chukonu_mybatis</artifactId>
 	<version>0.0.1-batis-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -32,10 +32,15 @@
 			<version>9.1-901.jdbc4</version>
 		</dependency>
 		<dependency>
-		  <groupId>junit</groupId>
-		  <artifactId>junit</artifactId>
-		  <version>4.12</version>
-		  <scope>test</scope>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.16</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

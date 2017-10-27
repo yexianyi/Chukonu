@@ -2,7 +2,7 @@ package com.yxy.chukonu.mybatis.mapper.customer;
 
 public interface CustomerMapper {
 	
-	public Customer findCustomer(String uuid);
+	public Customer findCustomer(String user_uuid);
 	
 	
 
