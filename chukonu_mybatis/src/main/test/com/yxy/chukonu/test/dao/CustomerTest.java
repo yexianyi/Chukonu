@@ -13,8 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.yxy.chukonu.mybatis.mapper.Customer;
-import com.yxy.chukonu.mybatis.mapper.CustomerMapper;
+import com.yxy.chukonu.mybatis.mapper.customer.Customer;
+import com.yxy.chukonu.mybatis.mapper.customer.CustomerMapper;
 
 public class CustomerTest {
 	

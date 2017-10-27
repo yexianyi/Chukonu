@@ -1,4 +1,4 @@
-package com.yxy.chukonu.mybatis.mapper;
+package com.yxy.chukonu.mybatis.mapper.customer;
 
 public class Customer {
 	

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="customer" type="com.yxy.chukonu.mybatis.mapper.Customer" />
+		<typeAlias alias="customer" type="com.yxy.chukonu.mybatis.mapper.customer.Customer" />
 	</typeAliases>
 	
   <environments default="development">
@@ -19,6 +19,6 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="com/yxy/chukonu/mybatis/mapper/CustomerMapper.xml"/>
+    <mapper resource="com/yxy/chukonu/mybatis/mapper/customer/CustomerMapper.xml"/>
   </mappers>
 </configuration>
