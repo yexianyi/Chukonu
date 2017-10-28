@@ -38,16 +38,16 @@ public class AccountTest {
 	
 	@Test
 	public void testQueryBySqlSession() {
-		Account result = (Account) session.selectOne("findAccount", "1");
-		assertEquals("1000-1000-1000-1000", result.getAcc_number());
+		Account result = (Account) session.selectOne("findAccount", "aa889216-2dec-437b-87b0-1272d12a80c8");
+		assertEquals("1000100010001000", result.getAcc_number());
 	}
 	
 	
 	@Test
 	public void testQueryByMapper() {
 		AccountMapper mapper = session.getMapper(AccountMapper.class) ;
-		Account result = mapper.findAccount("2") ;
-		assertEquals("2000-2000-2000-2000", result.getAcc_number());
+		Account result = mapper.findAccount("89ab5a34-0e07-43e2-a5e6-8b0ad8446a26") ;
+		assertEquals("2000200020002000", result.getAcc_number());
 	}
 	
 	

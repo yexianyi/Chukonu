@@ -36,7 +36,7 @@ public class CustomerTest {
 	
 	@Test
 	public void testQueryBySqlSession() {
-		Customer result = (Customer) session.selectOne("findCustomer", "2");
+		Customer result = (Customer) session.selectOne("findCustomer", "652300f0-2a8b-4728-8704-3968a8819a5a");
 		assertEquals("aaa", result.getName());
 	}
 	
@@ -44,8 +44,8 @@ public class CustomerTest {
 	@Test
 	public void testQueryByMapper() {
 		CustomerMapper mapper = session.getMapper(CustomerMapper.class) ;
-		Customer result = mapper.findCustomer("2") ;
-		assertEquals("aaa", result.getName());
+		Customer result = mapper.findCustomer("e92c3808-bea4-4fc3-9877-c71c31c5709d") ;
+		assertEquals("bbb", result.getName());
 	}
 	
 	

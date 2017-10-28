@@ -3,13 +3,42 @@ package com.yxy.chukonu.mybatis.mapper.account;
 import lombok.Data;
 /**
  * 
- create table accounts(
-  id varchar(255) primary key,
-  acc_number varchar(255) not null,
-  acc_balance float not null,
-  acc_cus_ref_id varchar(255) not null,
-  FOREIGN KEY (acc_cus_ref_id) REFERENCES customer(id)
+-- Table: public."ACCOUNTS"
+
+-- DROP TABLE public."ACCOUNTS";
+
+CREATE TABLE public."ACCOUNTS"
+(
+    "ID" character varying(36) COLLATE pg_catalog."default" NOT NULL,
+    "ACC_NUMBER" character varying(16) COLLATE pg_catalog."default" NOT NULL,
+    "ACC_BALANCE" numeric(38,2) NOT NULL,
+    "ACC_CUS_REF_ID" character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "ACCOUNTS_pkey" PRIMARY KEY ("ID"),
+    CONSTRAINT "ACC_CUS_FK" FOREIGN KEY ("ACC_CUS_REF_ID")
+        REFERENCES public."CUSTOMERS" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public."ACCOUNTS"
+    OWNER to postgres;
+
+-- Index: fki_ACC_CUS_FK
+
+-- DROP INDEX public."fki_ACC_CUS_FK";
+
+CREATE INDEX "fki_ACC_CUS_FK"
+    ON public."ACCOUNTS" USING btree
+    ("ACC_CUS_REF_ID" COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+
+INSERT INTO "ACCOUNTS" VALUES ('aa889216-2dec-437b-87b0-1272d12a80c8', '1000100010001000', 200.00, '652300f0-2a8b-4728-8704-3968a8819a5a');
+INSERT INTO "ACCOUNTS" VALUES ('89ab5a34-0e07-43e2-a5e6-8b0ad8446a26', '2000200020002000', 100.00, 'e92c3808-bea4-4fc3-9877-c71c31c5709d');
+
 
  * @author xianyiye
  *

@@ -4,6 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yxy.chukonu.mybatis.mapper.account.AccountMapper">
 	<select id="findAccount" resultType="account">
-		select * from ACCOUNTS where id = #{acc_uuid}
+		select * from "ACCOUNTS" where "ID" = #{acc_uuid}
 	</select>
 </mapper>
