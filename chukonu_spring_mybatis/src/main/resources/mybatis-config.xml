@@ -7,7 +7,7 @@
 		<typeAlias alias="customer" type="com.yxy.chukonu.mybatis.mapper.customer.Customer" />
 		<typeAlias alias="account" type="com.yxy.chukonu.mybatis.mapper.account.Account" />
 	</typeAliases>
-	
+	<!-- Concrete JDBC info has been moved to spring-mybatis.xml
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
@@ -19,6 +19,7 @@
       </dataSource>
     </environment>
   </environments>
+  -->
   <mappers>
     <mapper resource="com/yxy/chukonu/mybatis/mapper/customer/CustomerMapper.xml"/>
     <mapper resource="com/yxy/chukonu/mybatis/mapper/account/AccountMapper.xml"/>
