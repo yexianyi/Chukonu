@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-## Cho-Ko-Nu repository
+## Chu-Ko-Nu repository
 
 Cho-Ko-Nu is an Open Source ([Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)) library contains many utilities or problem solutions that could facilitate daily development for developers.
 In order to well organize this library, each of tools is maintained at an independent folder.
