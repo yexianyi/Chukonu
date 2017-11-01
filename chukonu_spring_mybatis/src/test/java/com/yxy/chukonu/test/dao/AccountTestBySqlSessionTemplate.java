@@ -21,19 +21,19 @@ import com.yxy.chukonu.mybatis.mapper.account.AccountMapper;
 import com.yxy.chukonu.mybatis.mapper.customer.Customer;
 import com.yxy.chukonu.mybatis.mapper.customer.CustomerMapper;
 
-public class AccountTest {
+public class AccountTestBySqlSessionTemplate {
 	
 	private SqlSessionTemplate sqlSessionTemplate ;
 	
 	@Before
 	public void createSession(){
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis.xml") ;
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis-sqlSessionTemplate.xml") ;
 		sqlSessionTemplate = ctx.getBean(SqlSessionTemplate.class) ;
 	}
 	
 	
 	@Test
-	public void testQueryBySqlSession() {
+	public void testQuery() {
 		Account account = new Account() ;
 		account.setId("aa889216-2dec-437b-87b0-1272d12a80c8");
 		

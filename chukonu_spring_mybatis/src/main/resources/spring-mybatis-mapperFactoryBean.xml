@@ -33,17 +33,22 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 	
+	<!-- the priority of SqlSessionTemplate is higher than SqlSessionFactory
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean> 
+	-->
+	
 	<!-- mybatis Mappers -->
 	<bean id="customerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="com.yxy.chukonu.mybatis.mapper.customer.CustomerMapper"/>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
 	
+	<bean id="accountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.yxy.chukonu.mybatis.mapper.account.AccountMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
 	
-	<!-- the priority of SqlSessionTemplate is higher than SqlSessionFactory
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory"/>
-	</bean> 
-	-->
 
 </beans>  

@@ -27,23 +27,13 @@
 		<property name="maxWait" value="10000" />
 	</bean> 
 
-
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 	
-	<!-- mybatis Mappers -->
-	<bean id="customerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.yxy.chukonu.mybatis.mapper.customer.CustomerMapper"/>
-		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-	</bean>
-	
-	
-	<!-- the priority of SqlSessionTemplate is higher than SqlSessionFactory
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"/>
 	</bean> 
-	-->
 
 </beans>  
