@@ -17,6 +17,9 @@
             http://www.springframework.org/schema/aop  
             http://www.springframework.org/schema/aop/spring-aop.xsd "  
     default-autowire="byName">  
+    
+    <context:annotation-config/>
+    <context:component-scan base-package="com.yxy.chukonu.mybatis.*"/>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
@@ -26,10 +29,6 @@
 		<property name="maxActive" value="255" />
 		<property name="maxWait" value="10000" />
 	</bean> 
-
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -41,6 +40,12 @@
 		<constructor-arg ref="sqlSessionFactory"/>
 	</bean> 
 	-->
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.yxy.chukonu.mybatis.mapper" />

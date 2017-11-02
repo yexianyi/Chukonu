@@ -6,7 +6,8 @@
 	<typeAliases>
 		<typeAlias alias="customer" type="com.yxy.chukonu.mybatis.mapper.customer.Customer" />
 		<typeAlias alias="account" type="com.yxy.chukonu.mybatis.mapper.account.Account" />
-	</typeAliases>
+	</typeAliases> 
+	
 	<!-- Concrete JDBC info has been moved to spring-mybatis.xml
   <environments default="development">
     <environment id="development">
