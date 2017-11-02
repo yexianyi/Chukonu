@@ -13,12 +13,17 @@
 		<artifactId>chukonu</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>chukonu_spring_mybatis_tx</artifactId>
-	<version>chukonu_spring_mybatis_tx-0.0.1-SNAPSHOT</version>
+	<artifactId>chukonu_spring_mvc_mybatis</artifactId>
+	<version>chukonu_spring_mvc_mybatis-0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>chukonu_spring_mybatis_tx Maven Webapp</name>
+	<name>chukonu_spring_mvc_mybatis Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>5.0.1.RELEASE</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -67,7 +72,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>chukonu_spring_mybatis_tx</finalName>
+		<finalName>chukonu_spring_mvc_mybatis</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

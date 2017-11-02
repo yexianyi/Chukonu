@@ -71,5 +71,6 @@
     <module>chukonu_mybatis</module>
     <module>chukonu_spring_mybatis</module>
     <module>chukonu_spring_mybatis_tx</module>
+    <module>chukonu_spring_mvc_mybatis</module>
   </modules>
 </project>
