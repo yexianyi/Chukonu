@@ -20,9 +20,9 @@
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-webmvc</artifactId>
-		    <version>5.0.1.RELEASE</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>5.0.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -85,6 +85,18 @@
 						<encoding>UTF-8</encoding>
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<webResources>
+							<resource>
+								<targetPath>WEB-INF</targetPath>
+								<directory>src/main/resources</directory>
+							</resource>
+						</webResources>
 					</configuration>
 				</plugin>
 			</plugins>
