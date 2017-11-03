@@ -16,7 +16,7 @@ public class CustomerServiceTestWithTx {
 	
 	@Before
 	public void createSession(){
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis-transactionManager.xml") ;
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml") ;
 		service = ctx.getBean(CustomerService.class) ;
 	}
 	
