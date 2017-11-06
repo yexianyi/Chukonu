@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yxy.chukonu.mybatis.exceptions.InsufficientBalanceException;
 import com.yxy.chukonu.mybatis.mapper.account.AccountMapper;
 import com.yxy.chukonu.mybatis.service.AccountService;
 
@@ -18,25 +19,26 @@ public class AccountServiceImpl implements AccountService {
 	private AccountMapper accountMapper ;
 	
 	@Override
-	public float getBalance(String usrId) {
+	public float getBalance(String acctId) {
 		
-		return accountMapper.getBalance(usrId);
+		return accountMapper.getBalance(acctId);
 	}
 	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public void deposit(float amount, String usrId) {
-		
+	public void deposit(float amount, String acctId) {
+		accountMapper.deposit(amount, acctId) ;
 	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public void withdraw(float amount, String usrId) {
-		accountMapper.withdraw(amount, usrId);
-		float remaining = accountMapper.getBalance(usrId) ;
+	public void withdraw(float amount, String acctId) {
+		accountMapper.withdraw(amount, acctId);
+		float remaining = accountMapper.getBalance(acctId) ;
 		if(remaining<0){
-			throw new RuntimeException("No enough balance") ;
+			throw new InsufficientBalanceException() ;
 		}
+		
 	}
 
 }

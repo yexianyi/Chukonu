@@ -8,10 +8,10 @@ public interface AccountMapper {
 	
 	public Account findAccount(String acc_uuid);
 	
-	public float getBalance(String usrId);
+	public float getBalance(String acctId);
 	
-	public void deposit(@Param(value="amount") float amount, @Param(value="usrId") String usrId) ;
+	public void deposit(@Param(value="amount") float amount, @Param(value="acctId") String acctId) ;
 	
-	public void withdraw(@Param(value="amount") float amount, @Param(value="usrId") String usrId) ;
+	public void withdraw(@Param(value="amount") float amount, @Param(value="acctId") String acctId) ;
 
 }

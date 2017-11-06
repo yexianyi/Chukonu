@@ -28,23 +28,25 @@ public class AccountTestByMapperScanner {
 	
 	@Test
 	public void testQueryBalance() {
-		float result = mapper.getBalance("652300f0-2a8b-4728-8704-3968a8819a5a") ;
+		float result = mapper.getBalance("aa889216-2dec-437b-87b0-1272d12a80c8") ;
 		assertEquals(200, result, 0.01);
 	}
 	
 	@Test
 	public void testDeposit() {
-		float original = mapper.getBalance("652300f0-2a8b-4728-8704-3968a8819a5a") ;
-		mapper.deposit(100f, "652300f0-2a8b-4728-8704-3968a8819a5a") ;
-		float result = mapper.getBalance("652300f0-2a8b-4728-8704-3968a8819a5a") ;
+		String acctId = "aa889216-2dec-437b-87b0-1272d12a80c8" ;
+		float original = mapper.getBalance(acctId) ;
+		mapper.deposit(100f, acctId) ;
+		float result = mapper.getBalance(acctId) ;
 		assertEquals(original+100, result, 0.01);
 	}
 	
 	@Test
 	public void testWithdraw() {
-		float original = mapper.getBalance("652300f0-2a8b-4728-8704-3968a8819a5a") ;
-		mapper.withdraw(100f, "652300f0-2a8b-4728-8704-3968a8819a5a") ;
-		float result = mapper.getBalance("652300f0-2a8b-4728-8704-3968a8819a5a") ;
+		String acctId = "aa889216-2dec-437b-87b0-1272d12a80c8" ;
+		float original = mapper.getBalance(acctId) ;
+		mapper.withdraw(100f, acctId) ;
+		float result = mapper.getBalance(acctId) ;
 		assertEquals(original-100, result, 0.01);
 	}
 	
