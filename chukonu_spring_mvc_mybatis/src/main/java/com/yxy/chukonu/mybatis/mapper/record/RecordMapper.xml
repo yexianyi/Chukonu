@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.chukonu.mybatis.mapper.record.RecordMapper">
+	<select id="listLog" resultType="record">
+		select * from "LOGS"
+	</select>
+	
+	<insert id="createLog" parameterType="Record" keyProperty="id" keyColumn="ID"  useGeneratedKeys="true">
+	    insert into "LOGS"("ID","OPERATION","CONTENT","UPDATE_TIME") values (#{uuid},#{operation},#{content},#{updateTime})  
+	</insert>
+	
+</mapper>

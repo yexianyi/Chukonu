@@ -2,11 +2,13 @@ package com.yxy.chukonu.mybatis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import com.yxy.chukonu.mybatis.exceptions.InsufficientBalanceException;
 import com.yxy.chukonu.mybatis.service.TransactionService;
 
 @Controller("txController")
@@ -24,5 +26,15 @@ public class TransactionController {
 		mv.setView(new MappingJackson2JsonView());
 		return mv;
 		
+	}
+	
+	@ExceptionHandler(InsufficientBalanceException.class)
+	public ModelAndView handleUserExist() {
+		ModelAndView mv = new ModelAndView() ;
+		mv.addObject("result", "failure") ;
+		mv.addObject("reason", "Insufficient Balance") ;
+		mv.setView(new MappingJackson2JsonView());
+		
+		return mv;
 	}
 }

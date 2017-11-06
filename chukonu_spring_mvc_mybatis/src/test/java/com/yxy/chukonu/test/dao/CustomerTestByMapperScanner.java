@@ -16,7 +16,7 @@ public class CustomerTestByMapperScanner {
 
 	@Before
 	public void createSession(){
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis-transactionManager.xml") ;
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml") ;
 		mapper = ctx.getBean(CustomerMapper.class) ;
 	}
 	

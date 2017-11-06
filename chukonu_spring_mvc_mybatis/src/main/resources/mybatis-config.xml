@@ -10,6 +10,7 @@
 	<typeAliases>
 		<typeAlias alias="customer" type="com.yxy.chukonu.mybatis.mapper.customer.Customer" />
 		<typeAlias alias="account" type="com.yxy.chukonu.mybatis.mapper.account.Account" />
+		<typeAlias alias="record" type="com.yxy.chukonu.mybatis.mapper.record.Record" />
 	</typeAliases> 
 	
 	<!-- Concrete JDBC info has been moved to spring-mybatis.xml
@@ -28,5 +29,6 @@
   <mappers>
     <mapper resource="com/yxy/chukonu/mybatis/mapper/customer/CustomerMapper.xml"/>
     <mapper resource="com/yxy/chukonu/mybatis/mapper/account/AccountMapper.xml"/>
+    <mapper resource="com/yxy/chukonu/mybatis/mapper/record/RecordMapper.xml"/>
   </mappers>
 </configuration>

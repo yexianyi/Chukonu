@@ -13,8 +13,12 @@
 				$.post({
 					url:"./submitTx.do" ,
 					data:params ,
-					success: function(result){
-						alert(result) ;
+					success: function(response){
+						if(response.result == "success"){
+							$("#resultRsp").text("Success") ;
+						}else{
+							$("#resultRsp").text("Fail, because of "+ response.reason);
+						}
 					}
 				});
 			});
@@ -46,6 +50,7 @@
 				</tr>
 			</table>
 		</form>
+		<p id="resultRsp"><p>
 	</center>	
 </body>
 </html>
