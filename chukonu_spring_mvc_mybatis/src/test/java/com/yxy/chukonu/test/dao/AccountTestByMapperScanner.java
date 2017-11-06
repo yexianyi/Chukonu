@@ -28,25 +28,25 @@ public class AccountTestByMapperScanner {
 	
 	@Test
 	public void testQueryBalance() {
-		float result = mapper.getBalance("aa889216-2dec-437b-87b0-1272d12a80c8") ;
+		float result = mapper.getBalance("1000100010001000") ;
 		assertEquals(200, result, 0.01);
 	}
 	
 	@Test
 	public void testDeposit() {
-		String acctId = "aa889216-2dec-437b-87b0-1272d12a80c8" ;
-		float original = mapper.getBalance(acctId) ;
-		mapper.deposit(100f, acctId) ;
-		float result = mapper.getBalance(acctId) ;
+		String acctNum = "1000100010001000" ;
+		float original = mapper.getBalance(acctNum) ;
+		mapper.deposit(100f, acctNum) ;
+		float result = mapper.getBalance(acctNum) ;
 		assertEquals(original+100, result, 0.01);
 	}
 	
 	@Test
 	public void testWithdraw() {
-		String acctId = "aa889216-2dec-437b-87b0-1272d12a80c8" ;
-		float original = mapper.getBalance(acctId) ;
-		mapper.withdraw(100f, acctId) ;
-		float result = mapper.getBalance(acctId) ;
+		String acctNum = "1000100010001000" ;
+		float original = mapper.getBalance(acctNum) ;
+		mapper.withdraw(100f, acctNum) ;
+		float result = mapper.getBalance(acctNum) ;
 		assertEquals(original-100, result, 0.01);
 	}
 	

@@ -8,14 +8,14 @@
 	</select>
 	
 	<select id="getBalance" resultType="float">
-	    select "ACC_BALANCE" from "ACCOUNTS" where "ID" = #{id}
+	    select "ACC_BALANCE" from "ACCOUNTS" where "ACC_NUMBER" = #{acctNum}
 	</select>
 	
 	<update id="deposit" parameterType="account">
-	    UPDATE "ACCOUNTS" SET "ACC_BALANCE" = "ACC_BALANCE" + #{amount} WHERE "ID" = #{acctId}
+	    UPDATE "ACCOUNTS" SET "ACC_BALANCE" = "ACC_BALANCE" + #{amount} WHERE "ACC_NUMBER" = #{acctNum}
 	</update>
 	
 	<update id="withdraw" parameterType="account">
-	    UPDATE "ACCOUNTS" SET "ACC_BALANCE" = "ACC_BALANCE" - #{amount} WHERE "ID" = #{acctId}
+	    UPDATE "ACCOUNTS" SET "ACC_BALANCE" = "ACC_BALANCE" - #{amount} WHERE "ACC_NUMBER" = #{acctNum}
 	</update>
 </mapper>

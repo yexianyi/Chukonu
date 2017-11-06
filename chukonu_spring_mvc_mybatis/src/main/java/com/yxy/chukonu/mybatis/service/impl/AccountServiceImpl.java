@@ -19,22 +19,22 @@ public class AccountServiceImpl implements AccountService {
 	private AccountMapper accountMapper ;
 	
 	@Override
-	public float getBalance(String acctId) {
+	public float getBalance(String acctNum) {
 		
-		return accountMapper.getBalance(acctId);
+		return accountMapper.getBalance(acctNum);
 	}
 	
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public void deposit(float amount, String acctId) {
-		accountMapper.deposit(amount, acctId) ;
+	public void deposit(float amount, String acctNum) {
+		accountMapper.deposit(amount, acctNum) ;
 	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
-	public void withdraw(float amount, String acctId) {
-		accountMapper.withdraw(amount, acctId);
-		float remaining = accountMapper.getBalance(acctId) ;
+	public void withdraw(float amount, String acctNum) {
+		accountMapper.withdraw(amount, acctNum);
+		float remaining = accountMapper.getBalance(acctNum) ;
 		if(remaining<0){
 			throw new InsufficientBalanceException() ;
 		}
