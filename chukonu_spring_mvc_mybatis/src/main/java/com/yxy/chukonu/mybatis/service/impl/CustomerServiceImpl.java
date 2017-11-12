@@ -3,6 +3,7 @@ package com.yxy.chukonu.mybatis.service.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +14,7 @@ import com.yxy.chukonu.mybatis.mapper.customer.CustomerMapper;
 import com.yxy.chukonu.mybatis.service.CustomerService;
 
 @Service
+@EnableAspectJAutoProxy
 public class CustomerServiceImpl implements CustomerService{
 	
 	Logger log = Logger.getLogger(CustomerServiceImpl.class) ;
