@@ -28,7 +28,7 @@ public class DataProducer {
 				PrintWriter out = new PrintWriter(outputStream, true) ;
 //				BufferedReader read = new BufferedReader(new InputStreamReader(System.in)) ;
 //				System.out.println("Waiting for user to input some data");
-				String data = StringUtil.getRandomString(8) ;
+				String data = "{data:[{col1:val1, col2:val2, col3:val3}, {col1:val4, col2:val5, col3:val6}, {col1:val7, col2:val8, col3:val9}]}" ;
 				
 				System.out.println("Sending data...["+data+"]");
 				out.println(data);

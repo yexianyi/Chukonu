@@ -45,55 +45,13 @@ public class DataReceiver
 			@Override
 			public void call(JavaRDD<String> rdd) throws Exception {
 				for(String str : rdd.collect()){
-					System.out.println(str);
+					System.out.println(str+ " ");
 				}
+				System.out.println("---------------------------------");
 			}
     		
     	});
     	
-    	
-//         StringBuilder stringBuilder = new StringBuilder();
-//         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream.));
-//         boolean firstLine = true;
-//         String line = null; ;
-//         while((line = bufferedReader.readLine()) != null){
-//             if(!firstLine){
-//                 stringBuilder.append(System.getProperty("line.separator"));
-//             }else{
-//                 firstLine = false;
-//             }
-//             stringBuilder.append(line);
-//         }
-//
-//    	
-//    	//map and merge 
-//    	JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>(){
-//			@Override
-//			public Iterator<String> call(String x) throws Exception {
-//				return Arrays.asList(x.split(" ")).iterator();
-//			}
-//    		
-//    	}) ;
-//    	
-//    	
-//    	JavaPairDStream<String,Integer> pairs = words.mapToPair(new PairFunction<String,String,Integer>(){
-//			@Override
-//			public Tuple2<String, Integer> call(String s) throws Exception {
-//				return new Tuple2<String,Integer>(s, 1);
-//			}
-//    		
-//    	}) ;
-//    	
-//    	
-//    	JavaPairDStream<String,Integer> wordCounts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>(){
-//			@Override
-//			public Integer call(Integer i1, Integer i2) throws Exception {
-//				return i1+i2 ;
-//			}
-//    	}) ;
-//    	
-//    	
-//    	wordCounts.print(10);
     	
     	//init streaming context
     	streamCtx.start();
