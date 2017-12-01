@@ -1,14 +1,14 @@
 package com.yxy.chukonu.spark.streaming;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Client {
+import com.yxy.chukonu.spark.streaming.util.StringUtil;
+
+public class DataProducer {
 
 	public static void main(String[] args) {
 		ServerSocket soc = null ;
@@ -26,11 +26,11 @@ public class Client {
 			
 			while(true){
 				PrintWriter out = new PrintWriter(outputStream, true) ;
-				BufferedReader read = new BufferedReader(new InputStreamReader(System.in)) ;
-				System.out.println("Waiting for user to input some data");
-				String data = read.readLine() ;
+//				BufferedReader read = new BufferedReader(new InputStreamReader(System.in)) ;
+//				System.out.println("Waiting for user to input some data");
+				String data = StringUtil.getRandomString(8) ;
 				
-				System.out.println("Data received and now writing it to socket");
+				System.out.println("Sending data...["+data+"]");
 				out.println(data);
 			}
 			

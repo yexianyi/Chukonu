@@ -3,6 +3,8 @@ package com.yxy.chukonu.spark.streaming;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
@@ -20,9 +22,12 @@ import scala.Tuple2;
  * Hello world!
  *
  */
-public class Server 
+public class WordCounter 
 {
     public static void main( String[] args ) {
+    	System.setProperty("hadoop.home.dir", DataReceiver.class.getClassLoader().getResource("").getPath());
+    	Logger.getLogger("org.apache.spark").setLevel(Level.ERROR) ;
+    	
     	// Create a local StreamingContext with two working thread and batch interval of 1 second
     	SparkConf conf = new SparkConf().setAppName("NetworkWordCount");
     	conf.setMaster("local[2]") ;
