@@ -3,7 +3,7 @@ package com.yxy.chukonu.java.jdk18.func.predicate;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class Example {
+public class PredicateExample {
 
 	public static void main(String[] args) {
 		Predicate<String> predicate = (s) -> s.length() > 0;
