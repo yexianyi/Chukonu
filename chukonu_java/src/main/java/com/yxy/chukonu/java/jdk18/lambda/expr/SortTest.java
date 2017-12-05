@@ -7,6 +7,12 @@ import java.util.List;
 
 public class SortTest {
 	
+	/**
+	 * 	(args) -> expr
+		(args) -> statement
+		(args) -> { statement句 } 
+	 */
+	
 	public static void main(String[] args) {
 		
 		//Old method
