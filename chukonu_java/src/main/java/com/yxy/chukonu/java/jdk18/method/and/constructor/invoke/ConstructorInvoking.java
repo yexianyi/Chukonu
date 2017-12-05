@@ -1,4 +1,4 @@
-package com.yxy.chukonu.java.jdk18.feature.method.and.constructor.invoke;
+package com.yxy.chukonu.java.jdk18.method.and.constructor.invoke;
 
 public class ConstructorInvoking {
 	static class Person {

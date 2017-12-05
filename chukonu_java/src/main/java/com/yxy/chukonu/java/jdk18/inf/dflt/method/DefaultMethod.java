@@ -1,4 +1,4 @@
-package com.yxy.chukonu.java.jdk18.feature.inf.dflt.method;
+package com.yxy.chukonu.java.jdk18.inf.dflt.method;
 
 public class DefaultMethod {
 	

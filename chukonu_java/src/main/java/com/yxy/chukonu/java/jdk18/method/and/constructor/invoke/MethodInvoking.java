@@ -1,6 +1,6 @@
-package com.yxy.chukonu.java.jdk18.feature.method.and.constructor.invoke;
+package com.yxy.chukonu.java.jdk18.method.and.constructor.invoke;
 
-import com.yxy.chukonu.java.jdk18.feature.func.inf.FuncInterface;
+import com.yxy.chukonu.java.jdk18.func.inf.FuncInterface;
 
 public class MethodInvoking {
 	

@@ -1,4 +1,4 @@
-package com.yxy.chukonu.java.jdk18.feature.lambda.expr;
+package com.yxy.chukonu.java.jdk18.lambda.expr;
 
 import java.util.Arrays;
 import java.util.Collections;

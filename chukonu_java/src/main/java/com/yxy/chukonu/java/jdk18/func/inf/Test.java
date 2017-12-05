@@ -1,4 +1,4 @@
-package com.yxy.chukonu.java.jdk18.feature.func.inf;
+package com.yxy.chukonu.java.jdk18.func.inf;
 
 public class Test {
 
