@@ -73,5 +73,6 @@
     <module>chukonu_spring_mybatis_tx</module>
     <module>chukonu_spring_mvc_mybatis</module>
     <module>chukonu_spark_streaming</module>
+    <module>chukonu_spring_boot</module>
   </modules>
 </project>
