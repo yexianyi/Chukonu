@@ -14,5 +14,10 @@ public class FunctionController {
     public ModelAndView test1() {
         return new ModelAndView("index");
     }
+    
+    @GetMapping("/test2")
+    public ModelAndView test2() {
+        return new ModelAndView("index");
+    }
 }
 
