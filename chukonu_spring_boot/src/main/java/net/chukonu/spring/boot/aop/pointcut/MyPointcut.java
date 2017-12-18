@@ -17,16 +17,16 @@ public class MyPointcut {
 
 	@Pointcut("execution(* net.chukonu.spring.boot.controller.*.**(..))")
 	public void callController() {
-		System.out.println("MyPointcut.@Pointcut()");
+		//only used for defining pointcut
 	}
 
 	
 	@Before("callController()")
 	public void doBefore(JoinPoint joinPoint) {
 		System.out.println("MyPointcut.doBefore()");
-		System.out.println("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "."
-				+ joinPoint.getSignature().getName());
-		System.out.println("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+//		System.out.println("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "."
+//				+ joinPoint.getSignature().getName());
+//		System.out.println("ARGS : " + Arrays.toString(joinPoint.getArgs()));
 
 	}
 
