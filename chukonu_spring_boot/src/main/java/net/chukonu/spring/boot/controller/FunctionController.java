@@ -1,6 +1,7 @@
-package org.chukonu.spring.boot.controller;
+package net.chukonu.spring.boot.controller;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +17,8 @@ public class FunctionController {
     }
     
     @GetMapping("/test2")
-    public ModelAndView test2() {
-        return new ModelAndView("index");
+    public ResponseEntity<String>  test2() {
+    	return ResponseEntity.ok("OK");
     }
 }
 
