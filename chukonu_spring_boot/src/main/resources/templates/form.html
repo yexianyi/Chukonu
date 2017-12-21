@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+	$.fn.serializeObject = function() {
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+	
+	function submit3(){
+		var reqParams = $("#form3").serializeObject();
+		console.log(JSON.stringify(reqParams)) ;
+		
+		$.ajax({
+			type: "POST",
+			contentType:"application/json",
+			url: "/form/submit3",
+			data: JSON.stringify(reqParams),
+			success: function(response){
+				 alert("成功\n"+JSON.stringify(response));
+			},
+			error: function(e){
+				alert("失败"+JSON.stringify(e));
+			}
+		}) ;
+	}
+//]]>
+</script>
+	
+</head>
+<body>
+
+	<form id="form1" action="/form/submit1" method="post">
+		<p>
+			First name: <input type="text" name="fname" />
+		</p>
+		<p>
+			Last name: <input type="text" name="lname" />
+		</p>
+		
+		<input type="checkbox" name="contactMethods" value="email" >Email</input>
+        <input type="checkbox" name="contactMethods" value="telephone" >Telephone</input> 
+		<br/>
+		
+		<select name="car">
+			<option value="volvo" selected="selected">Volvo</option>
+			<option value="saab">Saab</option>
+			<option value="fiat">Fiat</option>
+			<option value="audi">Audi</option>
+		</select> 
+		<br/>
+		
+		<input type="submit" value="Submit" />
+		<br/>
+	</form>
+
+	<hr/> 
+	
+	<form id="form3" action="/form/submit2" method="post">
+		<p>
+			First name: <input type="text" name="fname" />
+		</p>
+		<p>
+			Last name: <input type="text" name="lname" />
+		</p>
+		
+		<input type="checkbox" name="contactMethods" value="email" >Email</input>
+        <input type="checkbox" name="contactMethods" value="telephone" >Telephone</input> 
+		<br/>
+		
+		<select name="car">
+			<option value="volvo" selected="selected">Volvo</option>
+			<option value="saab">Saab</option>
+			<option value="fiat">Fiat</option>
+			<option value="audi">Audi</option>
+		</select> 
+		<br/>
+		
+		<input type="button" value="Submit" onclick="submit3()"/>
+		<br/>
+	</form>
+</body>
+</html>
