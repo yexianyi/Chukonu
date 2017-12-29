@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+
+var jsonObj = {
+		"sites": [
+			{ "name":"cainiao" , "url":"www.runoob.com" },
+			{ "name":"google" , "url":"www.google.com" },
+			{ "name":"weibo" , "url":"www.weibo.com" }
+			]
+			} ;
+
+function isJsonStr(str) {
+	if(typeof str != 'string'){
+		str = JSON.stringify(str) ;
+	}
+    
+	try {
+		var obj=JSON.parse(str);
+		if(str.indexOf('{')>-1){
+			return true;
+		}else{
+			return false;
+		}
+
+	} catch(e) {
+		return false;
+	}
+ 
+	return false;
+
+}
+
+
+
+function search(attr, jsonObj){
+	for(var key in jsonObj){
+		if(key==attr){
+			return jsonObj[key] ;
+		}
+		
+		var result = "NOT_FOUND" ;
+		if(Array.isArray(jsonObj[key])){ //array
+			 for(var i=0; i<jsonObj[key].length; i++){
+				result = search(attr, jsonObj[key][i]) ;
+				if(result!="NOT_FOUND"){
+					return result ;
+				}
+			 }
+		}else{//object
+			if(isJsonStr(jsonObj[key])){
+				result = search(attr, jsonObj[key]) ;
+				if(result!="NOT_FOUND"){
+					return result ;
+				}
+			}			
+		}
+	}
+	
+	return "NOT_FOUND" ;
+
+}
+
+
+$(document).ready(function() { 
+	
+	  console.log(search("op2", jsonObj));
+
+
+});
+
+</script>
+
+</head>
+
+
+
+
+</html>
