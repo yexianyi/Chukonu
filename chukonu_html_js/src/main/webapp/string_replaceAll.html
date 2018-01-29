@@ -1,0 +1,26 @@
+<html>
+
+<head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+
+String.prototype.replaceAll = function(s1,s2){ 
+	return this.replace(new RegExp(s1,"gm"),s2); 
+}
+
+$(document).ready(function() { 
+	var str = "My string replaceAll testing..."
+	str = str.replaceAll("replaceAll","new replaceAll");
+	alert(str) ;
+
+});
+
+</script>
+
+</head>
+
+
+
+
+
+</html>
