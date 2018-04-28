@@ -31,7 +31,7 @@ public class DataReceiver
 
     	
     	//Retreving Streaming Context from Spark Conf
-    	JavaStreamingContext streamCtx = new JavaStreamingContext(conf, Durations.seconds(2));
+    	JavaStreamingContext streamCtx = new JavaStreamingContext(conf, Durations.milliseconds(500));
     	
     	//specify Stream type, here we use TCP socket as text stream
     	//setup listener on specific machine, receive data and store them into RAM,
