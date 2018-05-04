@@ -10,12 +10,34 @@ import com.spotify.docker.client.messages.swarm.ContainerSpec;
 import com.spotify.docker.client.messages.swarm.Node;
 import com.spotify.docker.client.messages.swarm.Service;
 import com.spotify.docker.client.messages.swarm.ServiceSpec;
+import com.spotify.docker.client.messages.swarm.SwarmInit;
 import com.spotify.docker.client.messages.swarm.TaskSpec;
 
 public class SwarmService extends BaseService{
 
 	public SwarmService(String host, String port, String certPath) {
 		super(host, port, certPath);
+	}
+	
+	
+	public String initCluster(String advertiseAddr) {
+		DockerClient session = null ;
+		try {
+			session = openSession() ;
+			SwarmInit swarmInit = SwarmInit.builder().advertiseAddr(advertiseAddr).build() ;
+			return session.initSwarm(swarmInit) ;
+			
+		} catch (DockerCertificateException e) {
+			e.printStackTrace();
+		} catch (DockerException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			closeSession() ;
+		}
+		
+		return null ;
 	}
 	
 	//cmd: docker service create --name=my_nginx nginx  
