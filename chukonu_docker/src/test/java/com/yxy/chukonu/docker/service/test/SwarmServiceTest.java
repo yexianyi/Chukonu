@@ -1,5 +1,6 @@
 package com.yxy.chukonu.docker.service.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -38,6 +39,25 @@ public class SwarmServiceTest {
 		for(Node node : nodes) {
 			System.out.println(node.description().hostname() + " | " + node.status() + " | " + node.spec().availability());
 		}
+	}
+	
+	@Test
+	public void testCreateService() {
+		int originalSize = ss.listService().size() ;
+		String sId = ss.createService("service1", "tomcat:7") ;
+		assertNotNull(sId);
+		assertEquals(originalSize+1, ss.listService().size());
+		ss.removeService(sId);
+	}
+	
+	@Test
+	public void testRemoveService() {
+		int originalSize = ss.listService().size() ;
+		String sId = ss.createService("service1", "tomcat:7") ;
+		assertNotNull(sId);
+		ss.removeService(sId);
+		assertEquals(originalSize, ss.listService().size());
+		
 	}
 	
 	@Test
