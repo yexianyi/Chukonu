@@ -15,7 +15,7 @@ public class SystemService extends BaseService {
 		DockerClient session = null ;
 		try {
 			session = openSession() ;
-			Info info = session.info() ;
+			return session.info() ;
 		} catch (DockerCertificateException e) {
 			e.printStackTrace();
 		} catch (DockerException e) {
