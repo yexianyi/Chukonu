@@ -76,5 +76,7 @@
     <module>chukonu_spark_streaming</module>
     <module>chukonu_spring_boot</module>
     <module>chukonu_html_js</module>
+    <module>chukonu_websocket</module>
+    <module>chukonu_embedded_tomcat</module>
   </modules>
 </project>
