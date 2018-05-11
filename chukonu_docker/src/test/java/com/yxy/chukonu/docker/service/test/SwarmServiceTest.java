@@ -7,14 +7,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.spotify.docker.client.messages.swarm.Node;
-import com.spotify.docker.client.messages.swarm.NodeInfo;
 import com.spotify.docker.client.messages.swarm.Service;
+import com.yxy.chukonu.docker.client.conn.DockerConnection;
 import com.yxy.chukonu.docker.service.SwarmService;
 
 
@@ -33,33 +34,44 @@ public class SwarmServiceTest {
 	final String certPath2 = "C:\\Users\\Administrator\\.docker\\machine\\machines\\vm2" ;
 	final String certPath3 = "C:\\Users\\Administrator\\.docker\\machine\\machines\\vm3" ;
 	
-	public SwarmService ss = null ;
+	private DockerConnection conn = null ;
+	private SwarmService ss = null ;
 	
 	@Before
 	public void before() throws Exception {
-		ss = new SwarmService(host1, port, certPath1) ; 
+		conn = new DockerConnection(host1, port, certPath1) ;
+		ss = new SwarmService(conn) ;
+	}
+	
+	@After
+	public void after() throws Exception {
+		conn.close();
 	}
 
 	
 	@Test
 	public void test1CreateCluster() {
 		//create manager node on host1
-		String joinToken = ss.initCluster(host1, "0.0.0.0:"+mgrPort) ; 
+		String joinToken = ss .initCluster(host1, "0.0.0.0:"+mgrPort) ; 
 		assertNotNull(joinToken) ;
 	}
 	
 	@Test
 	public void test2AddWorkerNode() {
 		String joinToken = ss.inspectSwarm().joinTokens().worker() ;
+		conn.close();
 		
 		//create worker node on host1
-		ss = new SwarmService(host2, port, certPath2) ; 
+		conn = new DockerConnection(host2, port, certPath2) ;
+		ss = new SwarmService(conn) ;
 		assertTrue(ss.joinCluster(joinToken, host1, mgrPort)) ;
+		conn.close();
 		
 		//create worker node on host1
-		ss = new SwarmService(host3, port, certPath3) ; 
+		conn = new DockerConnection(host3, port, certPath3) ; 
+		ss = new SwarmService(conn) ;
 		assertTrue(ss.joinCluster(joinToken, host1, mgrPort)) ;
-		
+		conn.close();
 	}
 	
 	
@@ -107,13 +119,18 @@ public class SwarmServiceTest {
 	public void test7RemoveWorkerFromCluster() {
 		List<String> nodeNames = new ArrayList<String>() ;
 		//ask worker node leave cluster gracefully
-		ss = new SwarmService(host2, port, certPath2) ; 
+		DockerConnection conn = new DockerConnection(host2, port, certPath2) ; 
+		ss = new SwarmService(conn) ; 
 		nodeNames.add(ss.leaveClusterForWorker()) ;
 		//ask worker node leave cluster gracefully
-		ss = new SwarmService(host3, port, certPath3) ; 
+		conn = new DockerConnection(host3, port, certPath3) ; 
+		ss = new SwarmService(conn) ; 
 		nodeNames.add(ss.leaveClusterForWorker()) ;
+		conn.close();
+		
 		//remove worker node entries from manager
-		ss = new SwarmService(host1, port, certPath1) ; 
+		conn = new DockerConnection(host1, port, certPath1) ; 
+		ss = new SwarmService(conn) ; 
 		for(String nodeName : nodeNames) {
 			System.out.println(ss.inspectNode(nodeName).status().state().toUpperCase()) ;
 			while(!ss.inspectNode(nodeName).status().state().toUpperCase().equals("DOWN")) {
@@ -125,9 +142,11 @@ public class SwarmServiceTest {
 			}
 			ss.removeWorkerNodeEntry(nodeName) ;
 		}
-		
-		ss = new SwarmService(host1, port, certPath1) ; 
+		conn.close();
+		conn = new DockerConnection(host1, port, certPath1) ; 
+		ss = new SwarmService(conn) ; 
 		assertEquals(1, ss.listNodes().size()) ;
+		conn.close();
 	}
 	
 	@Test
@@ -137,5 +156,18 @@ public class SwarmServiceTest {
 		assertNotNull(nodeName) ;
 	}
 	
+	@Test
+	public void test9GetCpuUsageInNode() {
+		float cpuUsage = ss.getCpuUsageInNode() ;
+		System.out.println(cpuUsage) ;
+		assertTrue(cpuUsage>=0) ;
+	}
+	
+	@Test
+	public void test10GetMemUsageInNode() {
+		float memUsage = ss.getMemUsageInNode() ;
+		System.out.println(memUsage) ;
+		assertTrue(memUsage>=0) ;
+	}
 	
 }

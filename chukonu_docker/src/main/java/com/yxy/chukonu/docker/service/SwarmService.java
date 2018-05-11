@@ -3,9 +3,8 @@ package com.yxy.chukonu.docker.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
+import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.ServiceCreateResponse;
 import com.spotify.docker.client.messages.swarm.ContainerSpec;
 import com.spotify.docker.client.messages.swarm.Node;
@@ -16,68 +15,51 @@ import com.spotify.docker.client.messages.swarm.Swarm;
 import com.spotify.docker.client.messages.swarm.SwarmInit;
 import com.spotify.docker.client.messages.swarm.SwarmJoin;
 import com.spotify.docker.client.messages.swarm.TaskSpec;
+import com.yxy.chukonu.docker.client.conn.DockerConnection;
 
 public class SwarmService extends BaseService{
+	private DockerConnection conn = null ;
 
-	public SwarmService(String host, String port, String certPath) {
-		super(host, port, certPath);
+	public SwarmService(DockerConnection conn) {
+		super(conn);
+		this.conn = conn ;
 	}
-	
+
 	
 	public String initCluster(String advertiseAddr, String listenAddr) {
-		DockerClient session = null ;
+		SwarmInit swarmInit = SwarmInit.builder().advertiseAddr(advertiseAddr).listenAddr(listenAddr).build() ;
 		try {
-			session = openSession() ;
-			SwarmInit swarmInit = SwarmInit.builder().advertiseAddr(advertiseAddr).listenAddr(listenAddr).build() ;
-			return session.initSwarm(swarmInit) ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			return client.initSwarm(swarmInit) ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return null ;
+		
 	}
 	
 	public Swarm inspectSwarm() {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			return session.inspectSwarm() ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			return client.inspectSwarm() ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
-		
+			
 		return null ;
 	}
 	
 	
 	public NodeInfo inspectNode(String nodeId) {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			return session.inspectNode(nodeId) ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			return client.inspectNode(nodeId) ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return null ;
@@ -95,27 +77,21 @@ public class SwarmService extends BaseService{
 	 * @return
 	 */
 	public boolean joinCluster(String joinToken, String mgrAddr, String listeningPort) {
-		DockerClient session = null ;
 		List<String> remoteAddrs = new ArrayList<String>() ;
 		remoteAddrs.add(mgrAddr+":"+listeningPort) ;
+		SwarmJoin swarmJoin = SwarmJoin.builder()
+				.joinToken(joinToken)
+				.advertiseAddr(mgrAddr+":"+listeningPort)
+				.listenAddr("0.0.0.0:"+listeningPort)
+				.remoteAddrs(remoteAddrs) //remoteAddrs equal to advertise-addr
+				.build() ;
 		try {
-			session = openSession() ;
-			SwarmJoin swarmJoin = SwarmJoin.builder()
-					.joinToken(joinToken)
-					.advertiseAddr(mgrAddr+":"+listeningPort)
-					.listenAddr("0.0.0.0:"+listeningPort)
-					.remoteAddrs(remoteAddrs) //remoteAddrs equal to advertise-addr
-					.build() ;
-			session.joinSwarm(swarmJoin);
+			client.joinSwarm(swarmJoin);
 			return true ;
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return false ;
@@ -128,20 +104,13 @@ public class SwarmService extends BaseService{
 	 * @return
 	 */
 	public String leaveClusterForWorker() {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			session.leaveSwarm();
-		
-			return session.info().name() ;
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			client.leaveSwarm();
+			return client.info().name() ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return null ;
@@ -154,20 +123,13 @@ public class SwarmService extends BaseService{
 	 * @return
 	 */
 	public String leaveClusterForManager() {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			session.leaveSwarm(true);
-			
-			return session.info().name() ;
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			client.leaveSwarm(true);
+			return client.info().name() ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return null ;
@@ -181,19 +143,13 @@ public class SwarmService extends BaseService{
 	 * @return
 	 */
 	public boolean removeWorkerNodeEntry(String nodeName) {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			session.deleteNode(nodeName);
+			client.deleteNode(nodeName);
 			return true ;
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return false ;
@@ -207,19 +163,13 @@ public class SwarmService extends BaseService{
 	 * @return
 	 */
 	public boolean removeManagerNodeEntry(String nodeName) {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			session.deleteNode(nodeName, true);
+			client.deleteNode(nodeName, true);
 			return true ;
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return false ;
@@ -232,88 +182,88 @@ public class SwarmService extends BaseService{
 		TaskSpec taskSpec = TaskSpec.builder().containerSpec(containerSpec).build() ;
 		ServiceSpec spec = ServiceSpec.builder().name(sName).taskTemplate(taskSpec).build() ;
 		
-		DockerClient session = null ;
+		ServiceCreateResponse response;
 		try {
-			session = openSession() ;
-			ServiceCreateResponse response = session.createService(spec) ;
+			response = client.createService(spec);
 			return response.id() ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
-		
+			
 		return null ;
 	}
 	
 	
 	public boolean removeService(String sId) {
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			session.removeService(sId); ;
+			client.removeService(sId);
 			return true;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
-		}
+		} 
 		
 		return false ;
 	}
 	
 	//cmd: docker service ls
 	public List<Service> listService(){
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			return session.listServices() ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			return client.listServices() ;
 		} catch (DockerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
-		
+			
 		return null ;
 	}
 	
 	
 	//cmd: docker node ls
 	public List<Node> listNodes(){
-		DockerClient session = null ;
 		try {
-			session = openSession() ;
-			return session.listNodes() ;
-			
-		} catch (DockerCertificateException e) {
-			e.printStackTrace();
+			return client.listNodes() ;
 		} catch (DockerException e) {
 			if(e.getMessage().contains("This node is not a swarm manager")) {
 				return new ArrayList<Node>() ;
 			}
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			closeSession() ;
 		}
 		
 		return null ;
 	}
+	
+	
+	public float getCpuUsageInNode() {
+		ContainerService cs = new ContainerService(this.conn) ;
+		List<Container> containers = cs.listContainers() ;
+		float sum = 0.0f ;
+		for(Container c:containers) {
+			SystemService ss = new SystemService(this.conn) ;
+			sum += ss.getCpuUsage(c.id()) ;
+		}
+		
+		return sum ;
+	}
+	
+	public float getMemUsageInNode() {
+		ContainerService cs = new ContainerService(this.conn) ;
+		List<Container> containers = cs.listContainers() ;
+		float sum = 0.0f ;
+		for(Container c:containers) {
+			SystemService ss = new SystemService(this.conn) ;
+			sum += ss.getMemUsage(c.id()) ;
+		}
+		SystemService ss = new SystemService(this.conn) ;
+		return (float) (sum/ss.getMemLimit()) ;
+	}
+	
 
 }
