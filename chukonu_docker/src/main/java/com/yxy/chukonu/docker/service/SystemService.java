@@ -1,14 +1,19 @@
 package com.yxy.chukonu.docker.service;
 
-import com.spotify.docker.client.DockerClient;
+import java.util.List;
+
 import com.spotify.docker.client.exceptions.DockerException;
+import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.Info;
 import com.yxy.chukonu.docker.client.conn.DockerConnection;
 
 public class SystemService extends BaseService{
+	
+	private ContainerService cs = null ;
 
 	public SystemService(DockerConnection conn) {
 		super(conn);
+		cs = new ContainerService(conn) ;
 	}
 
 
@@ -59,5 +64,25 @@ public class SystemService extends BaseService{
 		
 	}
 	
+	public Float getHostCpuUsage() {
+		List<Container> containers = cs.listContainers() ;
+		float sum = 0 ;
+		for(Container c:containers) {
+			sum += getCpuUsage(c.id()) ;
+		}
+		
+		return sum ;
+	}
+	
+	
+	public Float getHostMemUsage() {
+		List<Container> containers = cs.listContainers() ;
+		float sum = 0 ;
+		for(Container c:containers) {
+			sum += getMemUsage(c.id()) ;
+		}
+		
+		return sum ;
+	}
 	
 }

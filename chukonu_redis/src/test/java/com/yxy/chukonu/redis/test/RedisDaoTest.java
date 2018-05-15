@@ -1,8 +1,12 @@
 package com.yxy.chukonu.redis.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -23,6 +27,58 @@ public class RedisDaoTest {
 	public void after() {
 	}
 	
+	
+	@Test
+	public void testInsertHashMaps() {
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "name", "vm1");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "age", "12");
+	}
+	
+	@Test
+	public void testGetHashMaps() {
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "name", "vm1");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "age", "12");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.102", "name", "vm2");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.103", "age", "20");
+		Map<String, Map<String, String>> map = dao.getHashMaps("NodeServer_") ;
+
+		Iterator<Map.Entry<String, Map<String, String>>> entries = map.entrySet().iterator();
+		while (entries.hasNext()) {
+			Map.Entry<String, Map<String, String>> entry = entries.next();
+			System.out.println(entry.getKey());
+			Map<String, String> m = entry.getValue() ;
+			Iterator<Map.Entry<String, String>> items = m.entrySet().iterator();
+			while (items.hasNext()) {
+				Map.Entry<String, String> item = items.next();
+				System.out.println("	Key = " + item.getKey() + ", Value = " + item.getValue());
+			}
+		}
+		
+	}
+	
+	
+	@Test
+	public void testGetHashMap() {
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "name", "vm1");
+		Map<String, String> map = dao.getHashMap("NodeServer_192.168.99.101");
+		assertNotNull(map) ;
+		Map<String, String> map2 = dao.getHashMap("NodeServer_192.168.99.102");
+		assertNull(map2) ;
+	}
+	
+	@Test
+	public void testGetHashMapAllKeys() {
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "name", "vm1");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "age", "12");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.102", "name", "vm2");
+		dao.saveUpdateHashMap("NodeServer_192.168.99.103", "age", "20");
+		Set<String> set = dao.getHashMapKeys("NodeServer_*") ;
+		assertEquals(3, set.size()) ;
+		
+	}
+	
+	
+	
 	@Test
 	public void testInsertStringToSet() {
 		dao.insertSet("servers", "192.168.99.101");
@@ -40,10 +96,10 @@ public class RedisDaoTest {
 		dao.insertSet("servers".getBytes(), entity2);
 		assertEquals(2, dao.getSet("servers").size());
 
-		Set<Entity> servers = (Set<Entity>) dao.getSet("servers".getBytes());
-		for (Entity s : servers) {
-			System.out.println(s.getName() + " | " + s.getStatus());
-		}
+//		Set<Entity> servers = (Set<Entity>) dao.getSet("servers".getBytes());
+//		for (Entity s : servers) {
+//			System.out.println(s.getName() + " | " + s.getStatus());
+//		}
 		
 	}
 	
@@ -60,10 +116,10 @@ public class RedisDaoTest {
 		dao.insertSet("servers".getBytes(), entities);
 		assertEquals(2, dao.getSet("servers".getBytes()).size());
 
-		Set<Entity> servers = (Set<Entity>) dao.getSet("servers".getBytes());
-		for (Entity s : servers) {
-			System.out.println(s.getName() + " | " + s.getStatus());
-		}
+//		Set<Entity> servers = (Set<Entity>) dao.getSet("servers".getBytes());
+//		for (Entity s : servers) {
+//			System.out.println(s.getName() + " | " + s.getStatus());
+//		}
 		
 	}
 	
@@ -73,11 +129,55 @@ public class RedisDaoTest {
 		dao.insertSortedSet("mydatasource", 0.32, "192.168.99.102");
 		dao.insertSortedSet("mydatasource", 0.38, "192.168.99.103");
 		assertEquals(3, dao.getSortedSet("mydatasource").size());
+		
+		Set<String> res1 = dao.getSortedSet("mydatasource", 0, 0) ;
+		assertEquals(1, res1.size());
+		assertEquals("192.168.99.102", res1.iterator().next()) ;
+		
+		Set<String> res2 = dao.getSortedSet("mydatasource", 1, 1) ;
+		assertEquals(1, res2.size());
+		assertEquals("192.168.99.103", res2.iterator().next()) ;
+		
+		Set<String> res3 = dao.getSortedSet("mydatasource", 2, 2) ;
+		assertEquals(1, res3.size());
+		assertEquals("192.168.99.101", res3.iterator().next()) ;
+	}
+	
+	
+	@Test
+	public void testGetFromSortedSet() {
+		dao.insertSortedSet("mydatasource", 0.46, "192.168.99.101");
+		dao.insertSortedSet("mydatasource", 0.32, "192.168.99.102");
+		dao.insertSortedSet("mydatasource", 0.38, "192.168.99.103");
+		
+		Set<String> res1 = dao.getSortedSet("mydatasource", 0, 0) ;
+		assertEquals(1, res1.size());
+		assertEquals("192.168.99.102", res1.iterator().next()) ;
+		
+		Set<String> res2 = dao.getSortedSet("mydatasource", 1, 1) ;
+		assertEquals(1, res2.size());
+		assertEquals("192.168.99.103", res2.iterator().next()) ;
+		
+		Set<String> res3 = dao.getSortedSet("mydatasource", 2, 2) ;
+		assertEquals(1, res3.size());
+		assertEquals("192.168.99.101", res3.iterator().next()) ;
+	}
+	
+	
+	@Test
+	public void testPopSortedSet() {
+		dao.insertSortedSet("mydatasource", 0.46, "192.168.99.101");
+		dao.insertSortedSet("mydatasource", 0.32, "192.168.99.102");
+		dao.insertSortedSet("mydatasource", 0.38, "192.168.99.103");
+		
+		Set<String> res1 = dao.popSortedSet("mydatasource", 1, 1) ;
+		assertEquals(1, res1.size());
+		assertEquals("192.168.99.103", res1.iterator().next()) ;
+		
+		Set<String> res2 = dao.getSortedSet("mydatasource", 0, -1) ;
+		assertEquals(2, res2.size());
+		
 
-		Set<String> sose = dao.getSortedSet("mydatasource");
-		for (String s : sose) {
-			System.out.println(s);
-		}
 	}
 	
 	

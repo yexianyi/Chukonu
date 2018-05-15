@@ -1,6 +1,9 @@
 package com.yxy.chukonu.docker.service.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +11,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import com.spotify.docker.client.messages.Container;
 import com.yxy.chukonu.docker.client.conn.DockerConnection;
+import com.yxy.chukonu.docker.service.ContainerService;
 import com.yxy.chukonu.docker.service.SystemService;
 
 
@@ -29,34 +34,47 @@ public class SystemServiceTest {
 	
 	private DockerConnection conn = null ;
 	private SystemService ss = null ;
+	private ContainerService cs = null ;
 	
 	@Before
 	public void before() throws Exception {
 		conn = new DockerConnection(host1, port, certPath1) ;
 		ss = new SystemService(conn) ; 
+		cs = new ContainerService(conn) ;
 	}
 	
 	@After
 	public void after() throws Exception {
 		conn.close();
 	}
-
+	
 	
 	@Test
 	public void testGetContainerCpuUsage() {
-		//create manager node on host1
-		Float status = ss.getCpuUsage("035b5548d8bf") ; 
-		System.out.println(status);
-		assertNotNull(status) ;
+		List<Container> containers = cs.listContainers() ;
+		for(Container c:containers) {
+			Float cpu = ss.getCpuUsage(c.id()) ; 
+			assertNotNull(cpu) ;
+		}
 	}
 	
 	@Test
 	public void testGetContainerMemUsage() {
-		//create manager node on host1
-		Float status = ss.getMemUsage("035b5548d8bf") ; 
-		System.out.println(status);
-		assertNotNull(status) ;
+		List<Container> containers = cs.listContainers() ;
+		for(Container c:containers) {
+			Float mem = ss.getMemUsage(c.id()) ; 
+			assertNotNull(mem) ;
+		}
 	}
+	
+	@Test
+	public void testGetTotalCpuUsage() {
+		float totalCpu = ss.getHostCpuUsage() ;
+		System.out.println("Total CPU Percent:"+totalCpu) ;
+		assertTrue(totalCpu>=0.0) ;
+	}
+	
+	
 	
 	
 	
