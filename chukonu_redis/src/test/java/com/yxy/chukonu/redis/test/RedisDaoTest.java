@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import com.yxy.chukonu.redis.model.dao.RedisDao;
 
+import redis.clients.jedis.Tuple;
+
 public class RedisDaoTest {
 
 	private RedisDao dao ;
@@ -180,6 +182,20 @@ public class RedisDaoTest {
 
 	}
 	
+	
+	@Test
+	public void getSortedSetWithScore() {
+		dao.insertSortedSet("mydatasource", 0.46, "192.168.99.101");
+		dao.insertSortedSet("mydatasource", 0.32, "192.168.99.102");
+		dao.insertSortedSet("mydatasource", 0.38, "192.168.99.103");
+		
+		Set<Tuple> set = dao.getSortedSetWithScore("mydatasource") ;
+		assertEquals(3, set.size());
+		assertEquals("192.168.99.102", set.iterator().next().getElement());
+		assertEquals(0.32d, set.iterator().next().getScore(), 0.0);
+		
+
+	}
 	
 	
 }

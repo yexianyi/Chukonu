@@ -8,6 +8,7 @@ import java.util.Set;
 import com.yxy.chukonu.redis.util.SerializeUtil;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Tuple;
 
 public class RedisDao extends BaseDao {
 
@@ -78,10 +79,10 @@ public class RedisDao extends BaseDao {
 	}
 	
 	
-	public String getHashMapValue(String key, String field) {
+	public String getHashMapValue(String key, String fieldKey) {
 		try {
 			jedis = getResource();
-			return jedis.hget(key, field);
+			return jedis.hget(key, fieldKey);
 		} finally {
 			if (jedis != null) {
 				jedis.close();
@@ -187,6 +188,18 @@ public class RedisDao extends BaseDao {
 		try {
 			jedis = getResource();
 			return jedis.zrange(key, 0, -1) ;
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+	}
+	
+	
+	public Set<Tuple> getSortedSetWithScore(String key) {
+		try {
+			jedis = getResource();
+			return jedis.zrangeWithScores(key, 0, -1) ;
 		} finally {
 			if (jedis != null) {
 				jedis.close();
