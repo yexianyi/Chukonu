@@ -30,6 +30,17 @@ public class RedisDao extends BaseDao {
 	}
 	
 	
+	public void saveUpdateString(String key, String value) {
+		try {
+			jedis = getResource();
+			jedis.set(key, value) ;
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+	}
+	
 	public void saveUpdateHashMap(String key, String hashKey, String hashValue) {
 		try {
 			jedis = getResource();
@@ -230,6 +241,12 @@ public class RedisDao extends BaseDao {
 			}
 		}
 	}
+	
+	public boolean isExistSortedSet(String key) {
+		Set<String> set = getSortedSet(key, 0, 0) ;
+		return set.size()==0? false : true ;
+	}
+	
 
 
 	public void insertMap(String key, String val) {

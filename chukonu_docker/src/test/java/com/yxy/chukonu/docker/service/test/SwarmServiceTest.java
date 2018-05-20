@@ -13,6 +13,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.swarm.Node;
 import com.spotify.docker.client.messages.swarm.Service;
 import com.yxy.chukonu.docker.client.conn.DockerConnection;
@@ -89,9 +90,16 @@ public class SwarmServiceTest {
 	@Test
 	public void test4CreateService() {
 		int originalSize = ss.listService().size() ;
-		String sId = ss.createService("service1", "tomcat:7") ;
-		assertNotNull(sId);
-		assertEquals(originalSize+1, ss.listService().size());
+		String sId;
+		try {
+			sId = ss.createService("service8", "vm6", "tomcat:7");
+			assertNotNull(sId);
+			assertEquals(originalSize+1, ss.listService().size());
+		} catch (DockerException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

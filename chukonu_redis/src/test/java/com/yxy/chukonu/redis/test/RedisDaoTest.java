@@ -3,6 +3,7 @@ package com.yxy.chukonu.redis.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -193,9 +194,19 @@ public class RedisDaoTest {
 		assertEquals(3, set.size());
 		assertEquals("192.168.99.102", set.iterator().next().getElement());
 		assertEquals(0.32d, set.iterator().next().getScore(), 0.0);
-		
 
 	}
 	
+	
+	@Test
+	public void ifExistSortedSet() {
+		dao.insertSortedSet("mydatasource", 0.46, "192.168.99.101");
+		dao.insertSortedSet("mydatasource", 0.32, "192.168.99.102");
+		dao.insertSortedSet("mydatasource", 0.38, "192.168.99.103");
+		
+		assertTrue(dao.isExistSortedSet("mydatasource"));
+		assertTrue(!dao.isExistSortedSet("mydatasource2"));
+
+	}
 	
 }

@@ -1,7 +1,9 @@
 package com.yxy.chukonu.docker.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.Container;
@@ -9,6 +11,7 @@ import com.spotify.docker.client.messages.ServiceCreateResponse;
 import com.spotify.docker.client.messages.swarm.ContainerSpec;
 import com.spotify.docker.client.messages.swarm.Node;
 import com.spotify.docker.client.messages.swarm.NodeInfo;
+import com.spotify.docker.client.messages.swarm.Placement;
 import com.spotify.docker.client.messages.swarm.Service;
 import com.spotify.docker.client.messages.swarm.ServiceSpec;
 import com.spotify.docker.client.messages.swarm.Swarm;
@@ -176,23 +179,33 @@ public class SwarmService extends BaseService{
 	}
 	
 	
+	public String createService(String serviceName, String imgName) throws DockerException, InterruptedException {
+		return createService(serviceName, null, imgName) ;
+	}
+	
 	//cmd: docker service create --name=my_nginx nginx  
-	public String createService(String sName, String imgName) {
+	public String createService(String serviceName, String targetHost, String imgName) throws DockerException, InterruptedException {
+		Map<String, String> labels = new HashMap<String, String>() ;
+		labels.put("alias", targetHost) ;
 		ContainerSpec containerSpec = ContainerSpec.builder().image(imgName).build() ;
-		TaskSpec taskSpec = TaskSpec.builder().containerSpec(containerSpec).build() ;
-		ServiceSpec spec = ServiceSpec.builder().name(sName).taskTemplate(taskSpec).build() ;
+		TaskSpec taskSpec = null ;
+		if(targetHost==null) {
+			List<String> constraints = new ArrayList<String>() ;
+			constraints.add("node.labels.alias=="+targetHost) ;
+			taskSpec = TaskSpec.builder().placement(Placement.create(constraints)).containerSpec(containerSpec).build() ;
+		}else {
+			taskSpec = TaskSpec.builder().containerSpec(containerSpec).build() ;
+		}
+		
+		ServiceSpec spec = ServiceSpec.builder()
+				.name(serviceName)
+				.taskTemplate(taskSpec)
+				.build() ;
 		
 		ServiceCreateResponse response;
-		try {
-			response = client.createService(spec);
-			return response.id() ;
-		} catch (DockerException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		response = client.createService(spec);
+		return response.id() ;
 			
-		return null ;
 	}
 	
 	
