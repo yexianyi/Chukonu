@@ -13,7 +13,7 @@ public class MessageWebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(messageWebSocketHandler(), "/sockjs/message")
-                .addInterceptors(new MessageWebSocketInterceptor()).withSockJS();
+                .addInterceptors(new MessageWebSocketInterceptor()).withSockJS() ;
     }
     
     

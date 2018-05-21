@@ -25,7 +25,7 @@ public class WebSocketClient {
 	
 	@OnMessage
 	public void onMessage(String message){
-		System.out.println("Client: onMessage()-"+message);
+		System.out.println("Client received msg:"+message);
 	}
 	
 	@OnClose

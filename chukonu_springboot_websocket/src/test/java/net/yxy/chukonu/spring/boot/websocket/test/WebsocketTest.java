@@ -29,7 +29,7 @@ import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import net.yxy.chukonu.spring.boot.websocket.Application;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { Application.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { Application.class }, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class WebsocketTest {
 	private final Logger logger = LoggerFactory.getLogger(WebsocketTest.class);
 	private final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
@@ -51,7 +51,7 @@ public class WebsocketTest {
 	@Test
 	public void getGreeting() throws Exception {
 		this.sockJsClient.doHandshake(new TestWebSocketHandler(),
-				"ws://localhost:" + String.valueOf(port) + "/sockjs/message?siteId=webtrn&userId=lucy");
+				"ws://localhost:" + String.valueOf(port) + "websocket/sockjs/message?siteId=webtrn&userId=lucy");
 		if (latch.await(60, TimeUnit.SECONDS)) {
 			if (failure.get() != null) {
 				throw new AssertionError(failure.get());

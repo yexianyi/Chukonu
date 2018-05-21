@@ -15,7 +15,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>chukonu_docker</artifactId>
-	<packaging>war</packaging>
+	
 	<version>1.0-SNAPSHOT</version>
 	<name>chukonu_websocket</name>
 	<url>http://maven.apache.org</url>

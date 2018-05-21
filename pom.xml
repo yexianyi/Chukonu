@@ -79,6 +79,7 @@
     <module>chukonu_websocket</module>
     <module>chukonu_embedded_tomcat</module>
     <module>chukonu_spring_boot_websocket</module>
+    <module>chukonu_consul_api</module>
     <module>chukonu_redis</module>
   </modules>
 </project>
