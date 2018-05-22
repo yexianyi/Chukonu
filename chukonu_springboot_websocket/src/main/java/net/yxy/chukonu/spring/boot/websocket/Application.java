@@ -1,12 +1,60 @@
 package net.yxy.chukonu.spring.boot.websocket;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.chukonu.consul.api.util.NetUtil;
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.NewService;
 
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    public static void main(String[] args) throws Exception {
+    	if(args==null || (args!=null && args[0].equalsIgnoreCase("server"))) {
+    		SpringApplication.run(Application.class, args);
+    	}else if(args[0].equalsIgnoreCase("client")){
+    		try {
+				registerService() ;
+				WebsocketTestClient.main(args);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}else {
+    		SpringApplication.run(Application.class, args);
+    	}
+    	
     }
+    
+    
+    public static void registerService() throws Exception {
+		//register service
+    	String consulAgent = System.getenv().get("CONSUL_AGENT"); ;
+    	NewService newService = new NewService();
+    	String id= System.currentTimeMillis()+"" ;
+		newService.setId("Datasource_"+id);
+		newService.setName("MySQL_datasource_"+NetUtil.getLocalHostLANAddress().getHostAddress()+"_"+id);
+		newService.setAddress("www.sohu.com");
+		newService.setTags(Arrays.asList("Datasource Adapter", "MySQL"));
+		newService.setPort(80);
+		
+		Map<String, String> metas = new HashMap<String, String>() ;
+		metas.put("db_url", "jdbc:mysql://localhost:3306/Test") ;
+		metas.put("db_username", "root") ;
+		metas.put("db_password", "root") ;
+		newService.setMeta(metas);
+		
+		try {
+			ConsulClient client = new ConsulClient(consulAgent);
+			Response<Void> response = client.agentServiceRegister(newService);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+	}
 }

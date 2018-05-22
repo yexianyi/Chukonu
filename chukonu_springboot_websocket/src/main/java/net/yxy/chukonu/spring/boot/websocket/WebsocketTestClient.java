@@ -1,4 +1,4 @@
-package net.yxy.chukonu.spring.boot.websocket.test;
+package net.yxy.chukonu.spring.boot.websocket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +19,12 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 
 
-public class WebsocketTest2 {
-	private final static Logger logger = LoggerFactory.getLogger(WebsocketTest2.class);
+public class WebsocketTestClient {
+	private final static Logger logger = LoggerFactory.getLogger(WebsocketTestClient.class);
 	private final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
 
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		List transports = new ArrayList<>();
 		transports.add(new WebSocketTransport(new StandardWebSocketClient()));
 		transports.add(new RestTemplateXhrTransport());
@@ -33,7 +33,7 @@ public class WebsocketTest2 {
 		sockJsClient.setMessageCodec(new Jackson2SockJsMessageCodec());
 		
 		ListenableFuture<WebSocketSession> session = sockJsClient.doHandshake(new TestWebSocketHandler(), 
-				"ws://localhost:8080/websocket/sockjs/message?siteId=webtrn&userId=lucy");
+				"ws://192.168.1.10:8080/websocket/sockjs/message?siteId=webtrn&userId=lucy");
 
 		while(true) {
 			try {
