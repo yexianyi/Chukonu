@@ -104,11 +104,37 @@ public class RedisDao extends BaseDao {
 	
 	
 	
-	public Set<String> getHashMapKeys(String keyPattern) {
+	public Set<String> getKeys(String keyPattern) {
 		try {
 			jedis = getResource();
 			Set<String> keys = jedis.keys(keyPattern) ;
 			return keys ;
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+		
+	}
+	
+	
+	public Long removeRecord(String key) {
+		try {
+			jedis = getResource();
+			return jedis.del(key);
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+		
+	}
+	
+	
+	public Long removeRecord(String key, String member) {
+		try {
+			jedis = getResource();
+			return jedis.zrem(key, member) ;
 		} finally {
 			if (jedis != null) {
 				jedis.close();

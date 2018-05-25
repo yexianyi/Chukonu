@@ -1,6 +1,7 @@
 package com.yxy.chukonu.docker.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,22 +181,44 @@ public class SwarmService extends BaseService{
 	
 	
 	public String createService(String serviceName, String imgName) throws DockerException, InterruptedException {
-		return createService(serviceName, null, imgName) ;
+		return createService(serviceName, null, imgName, null) ;
+	}
+	
+	public String createService(String serviceName, String imgName,  List<String> envVariables) throws DockerException, InterruptedException {
+		return createService(serviceName, null, imgName, envVariables) ;
+	}
+	
+	public String createService(String serviceName, String targetHost, String imgName) throws DockerException, InterruptedException {
+		return createService(serviceName, targetHost, imgName, null) ;
 	}
 	
 	//cmd: docker service create --name=my_nginx nginx  
-	public String createService(String serviceName, String targetHost, String imgName) throws DockerException, InterruptedException {
+	public String createService(String serviceName, String targetHost, String imgName, List<String> envVariables) throws DockerException, InterruptedException {
 		Map<String, String> labels = new HashMap<String, String>() ;
 		labels.put("alias", targetHost) ;
-		ContainerSpec containerSpec = ContainerSpec.builder().image(imgName).build() ;
+		
+		
+		ContainerSpec containerSpec = null ;
+		ContainerSpec.Builder cBuilder = null ;
+		if(envVariables==null) {
+			cBuilder = ContainerSpec.builder().image(imgName) ;
+		}else {
+			cBuilder = ContainerSpec.builder().image(imgName).env(envVariables);
+		}
+		containerSpec = cBuilder.build() ;
+		
+		
 		TaskSpec taskSpec = null ;
+		TaskSpec.Builder tsBuilder = null ;
 		if(targetHost==null) {
 			List<String> constraints = new ArrayList<String>() ;
 			constraints.add("node.labels.alias=="+targetHost) ;
-			taskSpec = TaskSpec.builder().placement(Placement.create(constraints)).containerSpec(containerSpec).build() ;
+			tsBuilder = TaskSpec.builder().placement(Placement.create(constraints)).containerSpec(containerSpec);
 		}else {
-			taskSpec = TaskSpec.builder().containerSpec(containerSpec).build() ;
+			tsBuilder = TaskSpec.builder().containerSpec(containerSpec) ;
 		}
+		taskSpec = tsBuilder.build() ;
+		
 		
 		ServiceSpec spec = ServiceSpec.builder()
 				.name(serviceName)

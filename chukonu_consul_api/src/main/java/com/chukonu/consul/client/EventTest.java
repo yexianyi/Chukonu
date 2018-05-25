@@ -14,7 +14,7 @@ import com.orbitz.consul.model.health.ServiceHealth;
 import com.orbitz.consul.model.kv.Value;
 import com.orbitz.consul.option.QueryOptions;
 
-public class Test {
+public class EventTest {
 
 	public static void main(String[] args) {
 		Consul consul = Consul.builder().build(); // connect to Consul on localhost

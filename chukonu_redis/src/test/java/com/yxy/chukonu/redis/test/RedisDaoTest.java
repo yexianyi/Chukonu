@@ -75,7 +75,7 @@ public class RedisDaoTest {
 		dao.saveUpdateHashMap("NodeServer_192.168.99.101", "age", "12");
 		dao.saveUpdateHashMap("NodeServer_192.168.99.102", "name", "vm2");
 		dao.saveUpdateHashMap("NodeServer_192.168.99.103", "age", "20");
-		Set<String> set = dao.getHashMapKeys("NodeServer_*") ;
+		Set<String> set = dao.getKeys("NodeServer_*") ;
 		assertEquals(3, set.size()) ;
 		
 	}
