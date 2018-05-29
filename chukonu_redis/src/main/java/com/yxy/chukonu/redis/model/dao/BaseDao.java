@@ -17,7 +17,7 @@ public class BaseDao {
 			synchronized(BaseDao.class){
 				if(pool==null){
 					JedisPoolConfig config = new JedisPoolConfig() ;
-					pool = new JedisPool(config, "192.168.99.101");
+					pool = new JedisPool(config, "192.168.1.15");
 				}
 			}
 		}

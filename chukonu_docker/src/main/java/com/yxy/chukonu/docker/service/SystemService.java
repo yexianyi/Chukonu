@@ -2,6 +2,8 @@ package com.yxy.chukonu.docker.service;
 
 import java.util.List;
 
+import org.jvnet.hk2.annotations.Service;
+
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.Container;
 import com.spotify.docker.client.messages.Info;
