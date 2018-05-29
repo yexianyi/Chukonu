@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import com.spotify.docker.client.DefaultDockerClient;
 import com.spotify.docker.client.DockerCertificates;
+import com.spotify.docker.client.DockerCertificates.SslContextFactory;
 import com.spotify.docker.client.DockerClient;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 
