@@ -18,6 +18,12 @@ public class RedisDao extends BaseDao {
 		super();
 	}
 
+	public Jedis getJedis() {
+		jedis = getResource();
+		return jedis ;
+	}
+	
+	
 	public void clearDB() {
 		try {
 			jedis = getResource();
