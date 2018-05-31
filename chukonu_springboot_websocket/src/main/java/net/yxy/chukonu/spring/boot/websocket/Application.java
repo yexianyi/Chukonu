@@ -22,7 +22,7 @@ import net.yxy.chukonu.spring.boot.websocket.service.MyNewServiceCheck;
 public class Application {
 
     public static void main(String[] args) throws Exception {
-    	registerService() ;
+//    	registerService() ;
     	if(args.length==0) {
     		SpringApplication.run(Application.class, args);
     	}
