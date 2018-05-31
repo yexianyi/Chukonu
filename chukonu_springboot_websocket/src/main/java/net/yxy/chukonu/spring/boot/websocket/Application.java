@@ -31,6 +31,8 @@ public class Application {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+    	}else {
+    		System.exit(0);
     	}
     	
     }
