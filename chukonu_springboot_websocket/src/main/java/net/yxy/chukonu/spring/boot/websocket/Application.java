@@ -2,7 +2,6 @@ package net.yxy.chukonu.spring.boot.websocket;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
@@ -10,13 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.chukonu.consul.api.util.NetUtil;
 import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewCheck;
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.ecwid.consul.v1.coordinate.model.Node;
-
-import net.yxy.chukonu.spring.boot.websocket.service.MyNewServiceCheck;
 
 @SpringBootApplication
 public class Application {
