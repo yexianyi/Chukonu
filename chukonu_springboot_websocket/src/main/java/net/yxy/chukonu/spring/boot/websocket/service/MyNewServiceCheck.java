@@ -1,11 +1,10 @@
 package net.yxy.chukonu.spring.boot.websocket.service;
 
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.google.gson.annotations.SerializedName;
 
 public class MyNewServiceCheck extends NewService.Check {
 	
-	@SerializedName("service_id")
+//	@SerializedName("service_id")
 	private String serviceId ;
 
 	public String getServiceId() {
