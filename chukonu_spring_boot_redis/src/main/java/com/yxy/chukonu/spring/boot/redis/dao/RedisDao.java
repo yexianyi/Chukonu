@@ -28,7 +28,6 @@ public class RedisDao {
 		try {
 			jedis = getResource();
 			jedis.flushDB();
-			redisTemplate.
 		} finally {
 			if (jedis != null) {
 				jedis.close();

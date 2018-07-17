@@ -8,8 +8,7 @@
 		<java.source.level>1.8</java.source.level>
 		<java.target.level>1.8</java.target.level>
 	</properties>
-	<!-- <parent> <groupId>com.yxy</groupId> <artifactId>chukonu</artifactId> 
-		<version>0.0.1-SNAPSHOT</version> </parent> -->
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -17,25 +16,57 @@
 	</parent>
 
 	<groupId>com.yxy</groupId>
-	<artifactId>chukonu_springboot_websocket</artifactId>
+	<artifactId>chukonu_springboot_hc</artifactId>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>chukonu_springboot_websocket</name>
+	<name>chukonu_springboot_hc</name>
 	<url>http://maven.apache.org</url>
+
+
 	<dependencies>
 		<dependency>
-			<groupId>com.yxy</groupId>
-			<artifactId>chukonu_consul_api</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-websocket</artifactId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+		<!-- <dependency> <groupId>javax.xml.bind</groupId> <artifactId>jaxb-api</artifactId> 
+			<version>2.3.0</version> </dependency> -->
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -48,22 +79,12 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>springboot-websocket</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>net.yxy.chukonu.spring.boot.websocket.Application</mainClass>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
