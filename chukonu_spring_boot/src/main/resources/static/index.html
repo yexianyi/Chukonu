@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>Title</title>
+    <script src="js/jquery-3.2.1.js" type="text/javascript"></script>
+</head>
+<body>
+<input type="button" value="测试json请求" onclick="testJson()" />
+<input type="button" value="测试jsonp请求" onclick="testJsonp()" />
+<script type="text/javascript">
+ function testJson() {
+     $.ajax({
+         type:'get',
+         url:'/jsonp/user',
+         dataType:'json',
+         success:function (json) {
+        	 alert(JSON.stringify(json));
+         },
+         error:function (error) {
+        	 alert('错误:'+JSON.stringify(error));
+         }
+     });
+ }
+
+ function testJsonp() {
+        $.ajax({
+            type:'get',
+            url:'/jsonp/user2',
+            dataType:'jsonp',
+            jsonp:"callback",
+            jsonpCallback: "showdata",
+            success:function (json) {
+                alert(JSON.stringify(json));
+            },
+            error:function (error) {
+                alert('错误:'+JSON.stringify(error));
+            }
+        });
+    }
+ 
+ 
+ function showdata(str){
+	 alert("success");
+ }
+</script>
+</body>
+</html>
+

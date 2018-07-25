@@ -1,5 +1,6 @@
 package net.chukonu.spring.boot.controller.param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
