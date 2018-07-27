@@ -1,47 +1,73 @@
 <html>
 <head>
-    <title>Title</title>
-    <script src="js/jquery-3.2.1.js" type="text/javascript"></script>
+<title>Title</title>
+<script src="js/jquery-3.2.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		getRealIp() ;
+    });
+
+	function testJson() {
+	    $.ajax({
+	        type:'get',
+	        url:'/jsonp/user',
+	        dataType:'json',
+	        success:function (json) {
+	       	 alert(JSON.stringify(json));
+	        },
+	        error:function (error) {
+	       	 alert('错误:'+JSON.stringify(error));
+	        }
+	    });
+	}
+
+	function testJsonp() {
+	       $.ajax({
+	           type:'get',
+	           url:'/jsonp/user2',
+	           dataType:'jsonp',
+	           jsonp:"callback",
+	           jsonpCallback: "showdata",
+	           success:function (json) {
+	               alert(JSON.stringify(json));
+	           },
+	           error:function (error) {
+	               alert('错误:'+JSON.stringify(error));
+	           }
+	       });
+	   }
+	
+	
+	function showdata(str){
+	 alert("success");
+	}
+	
+	function getRealIp(){
+	 $.ajax({
+	        type:'get',
+	        url:'/function/local_ip',
+	        dataType:'json',
+	        contentType:'application/json;charset=utf-8',
+	        success:function (data) {
+	       	 $("#realIpAddr").text("Real IP: "+data.address) ;
+	        },
+	        error:function (error) {
+	       	 $("#realIpAddr").text("Error:"+JSON.stringify(error)) ;
+	        }
+	    });
+	}
+</script>
 </head>
 <body>
-<input type="button" value="测试json请求" onclick="testJson()" />
-<input type="button" value="测试jsonp请求" onclick="testJsonp()" />
-<script type="text/javascript">
- function testJson() {
-     $.ajax({
-         type:'get',
-         url:'/jsonp/user',
-         dataType:'json',
-         success:function (json) {
-        	 alert(JSON.stringify(json));
-         },
-         error:function (error) {
-        	 alert('错误:'+JSON.stringify(error));
-         }
-     });
- }
-
- function testJsonp() {
-        $.ajax({
-            type:'get',
-            url:'/jsonp/user2',
-            dataType:'jsonp',
-            jsonp:"callback",
-            jsonpCallback: "showdata",
-            success:function (json) {
-                alert(JSON.stringify(json));
-            },
-            error:function (error) {
-                alert('错误:'+JSON.stringify(error));
-            }
-        });
-    }
- 
- 
- function showdata(str){
-	 alert("success");
- }
-</script>
+	<p id="realIpAddr"></p>
+	<input type="button" value="Test json" onclick="testJson()" />
+	<input type="button" value="Test jsonp" onclick="testJsonp()" />
+	
+	<br/>
+	<a href="customer/customers.html">Customer List</a> 
+	<br/>
+	<a href="customer/products.html">Product List</a> 
+	<br/>
 </body>
 </html>
 

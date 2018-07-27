@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>chukonu_spring_boot</artifactId>
+	<artifactId>chukonu-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>chukonu_spring_boot</name>
 	<url>http://maven.apache.org</url>
@@ -14,6 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.source.level>1.8</java.source.level>
 		<java.target.level>1.8</java.target.level>
+		<docker.image.prefix>yexianyi</docker.image.prefix>
 	</properties>
 
 	<parent>
@@ -69,12 +70,9 @@
 			<artifactId>httpasyncclient</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.47</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -107,6 +105,20 @@
 					<encoding>UTF-8</encoding>
 					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.3</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<tag>latest</tag>
+					<buildArgs>
+					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+					<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+					
 				</configuration>
 			</plugin>
 		</plugins>
