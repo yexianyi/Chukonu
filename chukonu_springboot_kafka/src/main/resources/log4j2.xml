@@ -23,6 +23,7 @@
             <AppenderRef ref="KAFKA"/>
         </Logger>
         
-        <Logger name="org.apache.kafka" level="INFO" /> <!-- avoid recursive logging -->
+        <!-- avoid recursive logging -->
+        <Logger name="org.apache.kafka" level="INFO" /> 
     </Loggers>
 </Configuration>
