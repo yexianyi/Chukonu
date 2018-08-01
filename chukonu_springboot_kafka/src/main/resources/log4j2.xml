@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<Configuration status="warn" monitorInterval="30" strict="true" schema="Log4J-V2.2.xsd">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n" />
+        </Console>
+        
+        <Kafka name="KAFKA" topic="test">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n" />
+            <Property name="bootstrap.servers">localhost:9092</Property>
+        </Kafka>
+    </Appenders>
+ 
+    <Loggers>
+        <Root level="info"> <!-- Global config -->
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="KAFKA"/>
+        </Root>
+ 
+        <Logger name="kafkaLogger" level="TRACE" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="KAFKA"/>
+        </Logger>
+        
+        <Logger name="org.apache.kafka" level="INFO" /> <!-- avoid recursive logging -->
+    </Loggers>
+</Configuration>
