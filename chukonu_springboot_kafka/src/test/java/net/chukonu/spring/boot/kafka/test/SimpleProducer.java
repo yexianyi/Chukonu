@@ -10,7 +10,7 @@ public class SimpleProducer {
 
     public static void main(String[] args) {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
+        props.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
         props.put("acks", "all");
         props.put("retries", 0);
         props.put("batch.size", 16384);

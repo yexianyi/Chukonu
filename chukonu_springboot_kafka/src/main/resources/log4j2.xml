@@ -9,7 +9,7 @@
         <Kafka name="KAFKA" topic="test">
             <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n" />
-            <Property name="bootstrap.servers">localhost:9092</Property>
+            <Property name="bootstrap.servers">localhost:9092,localhost:9093,localhost:9094</Property>
         </Kafka>
     </Appenders>
  
