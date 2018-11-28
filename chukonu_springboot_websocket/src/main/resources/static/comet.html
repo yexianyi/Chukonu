@@ -1,0 +1,44 @@
+<!-- htmlcs-disable-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript"
+    src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+/* eslint-disable */
+    var connection = {
+        iframe : false,
+        server : 'api/v1/comet.do',
+        init : function() {
+            connection.iframe = document.createElement('iframe');
+            connection.iframe.setAttribute("id", "comet_iframe");
+            with (connection.iframe.style) {
+                left = top = "-100px";
+                height = width = "1px";
+                visibility = "hidden";
+                display = 'none';
+            }
+            $('body').append(connection.iframe)
+        },
+        request : function() {
+            var name = $('#name').val();
+            connection.iframe.setAttribute("src", connection.server + '?name='
+                    + name);
+        },
+        callback : function(data) {
+            $('#content').html(data);
+        }
+    }
+
+    $(document).ready(function() {
+        connection.init();
+    });
+</script>
+</head>
+<body>
+    <input type="text" id="name" />
+    <input type="button" value="start" onclick="connection.request();" />
+    <div id="content"></div>
+</body>
+</html>
