@@ -14,7 +14,7 @@
 		<artifactId>chukonu</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>chukonu_docker</artifactId>
+	<artifactId>chukonu_websocket</artifactId>
 	
 	<version>1.0-SNAPSHOT</version>
 	<name>chukonu_websocket</name>

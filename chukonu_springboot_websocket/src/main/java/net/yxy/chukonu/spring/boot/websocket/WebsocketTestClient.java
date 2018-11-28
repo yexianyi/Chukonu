@@ -33,7 +33,7 @@ public class WebsocketTestClient {
 		sockJsClient.setMessageCodec(new Jackson2SockJsMessageCodec());
 		
 		ListenableFuture<WebSocketSession> session = sockJsClient.doHandshake(new TestWebSocketHandler(), 
-				"ws://192.168.1.10:8080/websocket/sockjs/message?siteId=webtrn&userId=lucy");
+				"ws://localhost:8080/medical-cdss/api/v1/websocket.do?siteId=webtrn&userId=lucy");
 
 		while(true) {
 			try {
