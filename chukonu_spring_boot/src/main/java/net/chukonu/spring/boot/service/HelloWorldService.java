@@ -13,8 +13,8 @@ public class HelloWorldService {
 	@Async
 	public String asyncSayHello(String words) throws InterruptedException {
 		logger.info("Request#"+ words + " enters service()");
-		System.out.println("Do something in asyn for 3 sec");
-		Thread.sleep(3000);
+		System.out.println("Do something in asyn for 200 ms");
+		Thread.sleep(200);
 		logger.info("Request#"+ words + " quits service()");
 		return "success";
 	}

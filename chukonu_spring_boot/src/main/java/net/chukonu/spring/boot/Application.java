@@ -20,10 +20,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @ComponentScan(basePackages = "net.chukonu.spring.boot.*")  
 @EnableAsync
-public class ChukonuSpringBootApplication {
+public class Application {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(ChukonuSpringBootApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
     
     /**
@@ -33,9 +33,9 @@ public class ChukonuSpringBootApplication {
     @Bean
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(100);
-        executor.setMaxPoolSize(200);
-        executor.setQueueCapacity(500);
+        executor.setCorePoolSize(800);
+        executor.setMaxPoolSize(1200);
+        executor.setQueueCapacity(400);
         executor.setThreadNamePrefix("Chukonu-");
         executor.initialize();
         return executor;
@@ -53,12 +53,9 @@ public class ChukonuSpringBootApplication {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         Http11NioProtocol http11NioProtocol = (Http11NioProtocol) connector.getProtocolHandler();
         connector.setPort(8081);
-        //设置最大线程数
-        http11NioProtocol.setMaxThreads(100);
-        //设置初始线程数  最小空闲线程数
-        http11NioProtocol.setMinSpareThreads(20);
-        //设置超时
-        http11NioProtocol.setConnectionTimeout(5000);
+        http11NioProtocol.setAcceptorThreadCount(400);
+        http11NioProtocol.setMaxConnections(40000);
+        http11NioProtocol.setMaxThreads(400);
         return connector;
     }
 }

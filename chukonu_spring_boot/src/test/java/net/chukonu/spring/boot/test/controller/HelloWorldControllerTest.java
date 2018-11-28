@@ -23,11 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import net.chukonu.spring.boot.ChukonuSpringBootApplication;
+import net.chukonu.spring.boot.Application;
 import net.chukonu.spring.boot.controller.HelloWorldController;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ChukonuSpringBootApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HelloWorldControllerTest extends MockMvcResultMatchers{
     
 	private final Logger logger = LoggerFactory.getLogger(HelloWorldControllerTest.class);

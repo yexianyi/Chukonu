@@ -1,7 +1,5 @@
 package net.chukonu.spring.boot.aop.pointcut;
 
-import java.util.Arrays;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
