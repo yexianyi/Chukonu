@@ -85,5 +85,6 @@
     <module>chukonu_kafka</module>
     <module>chukonu_springboot_kafka</module>
     <module>chukonu_springcloud_eureka</module>
+    <module>chukonu-springsecurity</module>
   </modules>
 </project>
