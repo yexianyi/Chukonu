@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -45,6 +46,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
                 .successHandler(new SimpleUrlAuthenticationSuccessHandler())
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+                .and()
+                //the “never” option will ensure that Spring Security itself will not create any session; 
+                //however, if the application creates one, then Spring Security will make use of it.
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                                    .maximumSessions(1).maxSessionsPreventsLogin(true)
+                                    .expiredUrl("/sessionExpired.html").and()
+                                    .invalidSessionUrl("/invalidSession.html")
+                                    // Session Fixation Protection with Spring Security
+                                    // when “none” is set, the original session will not be invalidated
+                                    // when “newSession” is set, a clean session will be created without any of the attributes from the old session being copied over
+                                    .sessionFixation().newSession()
                 .and().logout();
 
     }
