@@ -28,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(new UnauthorizedEntryPoint())
-                .accessDeniedHandler(new CustomAccessDeineHandler())
+                .authenticationEntryPoint(new UnauthorizedEntryPoint()) // entrypoint for anonymous 
+                .accessDeniedHandler(new CustomAccessDeineHandler()) // handler for logged in users but no enough permission
                 .and()
                 .headers().frameOptions().disable() // resolve 'X-Frame-Options' to 'deny' issue
                 .and()
@@ -57,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
+        // config UserDetail Implementation class to handle login verification
+        authProvider.setUserDetailsService(userService); 
         authProvider.setPasswordEncoder(encoder());
         return authProvider;
     }

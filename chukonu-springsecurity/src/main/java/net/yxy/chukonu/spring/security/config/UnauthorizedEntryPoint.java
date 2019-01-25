@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public final class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
 
+    /**
+     * this is a request dispatcher which is responsible to redirect request 
+     * to login page if current request is a HTML request;
+     * or return 401 error if this is a webservice request.
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException {
@@ -28,7 +33,7 @@ public final class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
         if(contentType == null) {
             return true ;
         } else {
-            return contentType.contains("text/html") ;
+            return contentType.toLowerCase().contains("text/html") ;
         }
     }
 }
