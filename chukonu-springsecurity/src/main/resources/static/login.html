@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Chukonu Login</title>
+    <link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/datagrid-export.js"></script>
+    <script type="text/javascript" src="js/datagrid-filter.js"></script>
+</head>
+    <div style="margin:20px 0;"></div>
+    <div style="float:right;margin:auto;">
+    	<form id="loginForm" action="/chukonu-springsecurity/login" method="post">
+		    <div class="easyui-panel" style="position:absolute; top:10%; right:10%;width:400px;padding:50px 60px">
+		        <div style="margin-bottom:20px">
+		            <input class="easyui-textbox" prompt="Username" name="username" iconWidth="28" style="width:100%;height:34px;padding:10px;">
+		        </div>
+		        <div style="margin-bottom:20px">
+		            <input id="pass" class="easyui-passwordbox" prompt="Password" name="password" iconWidth="28" style="width:100%;height:34px;padding:10px">
+		        </div>
+		        <div style="width:100%;text-align:center;">
+		        		<a href="#" class="easyui-linkbutton" style="width:100%" data-options="iconCls:'icon-ok'" onclick="javascript:login()">Login</a>
+		        </div>
+		    </div>
+	    </form>
+    </div>
+ 
+    <script type="text/javascript">
+        function login(){
+        	$("#loginForm").submit() ;
+        }
+        
+    </script>
+</body>
+</html>

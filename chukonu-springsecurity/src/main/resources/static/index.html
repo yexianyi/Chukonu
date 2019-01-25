@@ -1,0 +1,169 @@
+<!-- htmlcs-disable-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Chukonu SpringSecurity Demo</title>
+    <link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="js/datagrid-export.js"></script>
+    <script type="text/javascript" src="js/datagrid-filter.js"></script>
+</head>
+<body>
+    <h2 align="center">Chukonu SpringSecurity Demo</h2>
+   
+    <div style="width:1500px; margin:auto;">
+    <div style="margin-bottom:10px">
+    	<a href="api/v1/attachment/download" class="easyui-linkbutton" data-options="iconCls:'icon-save'">Export Data</a>
+    </div>
+    <table id="dg" class="easyui-datagrid" style="width:1500px;height:550px"
+    		data-options="singleSelect:true"
+            url="api/v1/data"
+            title="Product List"
+            pageSize="20"
+    		remoteFilter="true"
+            rownumbers="true" pagination="true"
+            >
+        <thead>
+            <tr>
+            	<th field="id">ID</th>
+                <th field="name" width="10%" align="left">Name</th>
+                <th field="type" width="5%" align="left">Type</th>
+                <th field="price" width="10%" align="left">Price</th>
+                <th field="quota" width="10%" align="left">Quota</th>
+                <th field="updateBy" width="10%" align="left">Update By</th>
+                <th field="updateTime" width="15%" align="left">Update Time</th>
+            </tr>
+        </thead>
+    </table>
+    </div>
+    
+    <div id="dlg" class="easyui-dialog" title="Detail" resizable="true" data-options="iconCls:'icon-save',closed:true" style="width:1000px;height:600px;padding:10px">
+    	<div class="easyui-layout" style="width:100%;height:100%;">	
+    		
+	    		<div data-options="region:'center',iconCls:'icon-ok'">
+			        	<table id="pg" class="easyui-propertygrid" style="width:100%" data-options="
+			        				nowrap : false,
+			        				showHeader:false,
+					                showGroup:false,
+					                scrollbarSize:0
+					            ">
+					    </table>
+	    		</div>
+	    		
+	    		<div data-options="region:'east',split:false" title="Update Type" style="width:200px;">
+	    			<form id="recordForm" action="api/v1/record/update" method="post">
+	    				<div style="display: none;">
+				        	<input class="easyui-textbox" name="id" editable="false"/>
+			        	</div>
+		    			<div style="margin-bottom:20px;margin-left:10px;margin-right:10px">
+				             <select class="easyui-combobox" id="prodTypeCombobox" name="type" separator="|" multiple="true" multiline="true" 
+				             label="Type：" labelPosition="top" style="width:100%;height:100px;"></select>
+				        </div>
+				        <div style="height:270px;"></div>
+				        
+				        <div style="margin-bottom:20px;margin-left:10px;margin-right:10px;width:180px;">
+				        	<table width="100%">
+				        		<tr>
+					        		<td align="center"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="javascript:update()">Save</a></td>
+					        		<td align="center"><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="javascript:cancel()">Cancel</a></td>
+				        		</tr>
+				        	</table>
+				        	
+				        	&nbsp;&nbsp;&nbsp;
+				        	
+				        </div>
+			        </form>
+	    		</div>
+	    		
+	    	</div>
+       
+    </div>
+    
+    <script type="text/javascript">
+	    $(document).ready(function(){
+	    	$('#dlg').dialog('close') ;
+	    	$('#dg').datagrid('hideColumn', 'id');
+	    	
+	    	//bind ESC keydown event to close dialog
+	    	$(window).keydown(function(event){
+	    		  if(event.keyCode == 27) {//ESC
+	    			  $('#dlg').dialog('close') ;
+	    		  }  
+	    	});
+	          
+    	});
+    
+		function popup(row) {
+			$('#dlg').dialog('open') ;
+			var json = [] ;
+			json.push({ "name": "id", "value": row.id}) ;
+			json.push({ "name": "name", "value": row.name}) ;
+			json.push({ "name": "type", "value": row.type}) ;
+			json.push({ "name": "price", "value": row.price}) ;
+			json.push({ "name": "quota", "value": row.quota}) ;
+			json.push({ "name": "updateBy", "value": row.updateBy}) ;
+			json.push({ "name": "updateTime", "value": row.updateTime}) ;
+			$('#pg').propertygrid('loadData', json);
+			
+			//show detail 
+			$('#recordForm').form('load',row);
+			
+			//load combox options
+			var data = [];
+			data.push({ "text": "Fruit", "value": "Fruit"});
+			data.push({ "text": "Coat", "value": "Coat"});
+			data.push({ "text": "Car", "value": "Car"});
+			//set combox result
+			$("#prodTypeCombobox").combobox("loadData", data);
+			
+		}
+		
+		
+		
+		$('#dg').datagrid({
+			onDblClickRow: function(index,row){
+				popup(row) ;
+			}
+		});
+		
+		function update(){
+            $('#recordForm').form('submit');
+            $('#dlg').dialog('close') ;
+            $('#dg').datagrid('reload') ;
+        }
+		
+		function revoke(){
+			$("#finalDiagnosis").val($('#prodTypeCombobox').combobox('getValues')) ;
+            $.ajax({
+            	url:"api/v1/record/" + $('#currRecordId')[0].value,
+            	type:"PUT",
+            	dataType:"text",
+            	error:function(error){
+            		alert("Withdraw Faild："+JSON.stringify(error)) ;
+            	}
+            }) ;
+            
+            $('#dlg').dialog('close') ;
+            $('#dg').datagrid('reload') ;
+        }
+      
+		function cancel(){
+			$('#dlg').dialog('close') ;
+        }
+		
+		$(function(){
+			var dg = $('#dg').datagrid({
+				clientPaging: false,
+                remoteFilter: true,
+                filterDelay: 5000
+            });
+            $('#dg').datagrid('enableFilter');
+        });
+		
+		
+    </script>
+</body>
+</html>
