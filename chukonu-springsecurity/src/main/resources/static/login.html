@@ -23,15 +23,30 @@
 		        <div style="width:100%;text-align:center;">
 		        		<a href="#" class="easyui-linkbutton" style="width:100%" data-options="iconCls:'icon-ok'" onclick="javascript:login()">Login</a>
 		        </div>
+		        <div id="error"></div>
 		    </div>
 	    </form>
     </div>
- 
-    <script type="text/javascript">
+
+<script type="text/javascript">
+       $(document).ready(function(){
+    	   if(getParam("error") != null){
+    	   		$("#error").html("<font color='red'>" + getParam("error") + "</font>")  ;
+    	   }
+       });
+        
+       function getParam(paramName) { 
+    	    paramValue = "", isFound = !1; 
+    	    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) { 
+    	        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0; 
+    	        while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++ 
+    	    } 
+    	    return paramValue == "" && (paramValue = null), paramValue 
+    	} 
+       
         function login(){
         	$("#loginForm").submit() ;
         }
-        
-    </script>
+</script>
 </body>
 </html>
