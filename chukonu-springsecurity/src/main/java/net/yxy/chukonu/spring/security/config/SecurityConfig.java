@@ -29,7 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new UnauthorizedEntryPoint()) // entrypoint for anonymous 
                 .accessDeniedHandler(new CustomAccessDeineHandler()) // handler for logged in users but no enough permission
