@@ -86,5 +86,7 @@
     <module>chukonu_springboot_kafka</module>
     <module>chukonu_springcloud_eureka</module>
     <module>chukonu-springsecurity</module>
+    <module>chukonu-springcloud-eureka-server</module>
+    <module>chukonu-springcloud-eureka-client</module>
   </modules>
 </project>
