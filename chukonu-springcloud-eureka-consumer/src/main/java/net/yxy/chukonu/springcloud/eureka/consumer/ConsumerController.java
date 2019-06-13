@@ -1,4 +1,4 @@
-package net.yxy.chukonu.springcloud.eureka.provider;
+package net.yxy.chukonu.springcloud.eureka.consumer;
 
 import java.net.UnknownHostException;
 

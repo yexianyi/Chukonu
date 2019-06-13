@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:net.yxy.chukonu.springcloud.eureka.provider.Application</config>
+		<config>java:net.yxy.chukonu.springcloud.eureka.consumer.Application</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

@@ -1,4 +1,4 @@
-package net.yxy.chukonu.springcloud.eureka.provider;
+package net.yxy.chukonu.springcloud.eureka.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
