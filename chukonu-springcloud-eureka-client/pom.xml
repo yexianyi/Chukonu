@@ -48,6 +48,24 @@
 		</dependency>
 	</dependencies>
 
-
+	<build>
+		<finalName>chukonu-springcloud-eureka-provider</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>net.yxy.chukonu.springcloud.eureka.provider.Application</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
