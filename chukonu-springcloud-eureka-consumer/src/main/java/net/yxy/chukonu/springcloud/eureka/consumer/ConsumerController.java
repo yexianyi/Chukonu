@@ -19,6 +19,6 @@ public class ConsumerController {
 
     @GetMapping("/ribbon-consumer")
     public String sayHello(@RequestParam String message) throws UnknownHostException {
-        return restTemplate.getForEntity("http://HELLO_SERVICE/hello?message=" + message, String.class).getBody();
+        return restTemplate.getForEntity("http://HELLO-SERVICE/hello?message=" + message, String.class).getBody();
     }
 }
