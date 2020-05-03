@@ -88,5 +88,6 @@
     <module>chukonu-springsecurity</module>
     <module>chukonu-springcloud-eureka-server</module>
     <module>chukonu-springcloud-eureka-provider</module>
+    <module>chukonu_netty</module>
   </modules>
 </project>
