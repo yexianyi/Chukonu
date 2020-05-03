@@ -1,4 +1,4 @@
-package com.yxy.chukonu.netty.single.thread.reactor;
+package com.yxy.chukonu.reactor.java.nio.single.thread;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,7 +25,7 @@ public class Server implements Runnable{
 	public void run() {
 		
 		try {
-			//1. get Selector()
+			//1. open Selector()
 			selector = Selector.open() ;
 			//2. get Channel
 			serverSocketChannel = ServerSocketChannel.open();
