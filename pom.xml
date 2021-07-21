@@ -112,5 +112,6 @@
 		<module>chukonu-springcloud-eureka-server</module>
 		<module>chukonu-springcloud-eureka-provider</module>
 		<module>chukonu_netty</module>
+		<module>chukonu_sparql_gremlin</module>
 	</modules>
 </project>
