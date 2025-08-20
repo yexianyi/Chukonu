@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016, Xianyi Ye
+ * Copyright (c) 2025, Xianyi Ye
  *
  * This project includes software developed by Xianyi Ye
  * yexianyi@hotmail.com

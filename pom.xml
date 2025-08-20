@@ -44,43 +44,24 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.14.0</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>2.11</version>
-				<configuration>
-					<header>license_header.ftl</header>
-					<properties>
-						<year>2016</year>
-						<owner>Xianyi Ye</owner>
-						<email>yexianyi@hotmail.com</email>
-					</properties>
-					<includes>
-						<include>src/main/java/**</include>
-						<include>src/test/java/**</include>
-					</includes>
-					<excludes>
-						<exclude>**/README</exclude>
-						<exclude>src/main/resources/**</exclude>
-						<exclude>src/test/resources/**</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>license-maven-plugin</artifactId>
+			    <version>2.6.0</version>
+			    <configuration>
+   					<licenseFile>license_header.ftl</licenseFile>
+			        <licenseName>apache_v2</licenseName>
+			        <includes>**/*.java</includes>
+			        <excludes>**/README</excludes>
+			        <excludes>**/src/main/resources/**</excludes>
+			        <excludes>**/src/test/resources/**</excludes>
+			    </configuration>
+			    <executions>
+				    <execution>
+				        <id>first</id>
 						<goals>
-							<!-- mvn license:format -->
-							<goal>format</goal>
+						  <goal>update-file-header</goal>
 						</goals>
-					</execution>
+				    </execution>
 				</executions>
 			</plugin>
 		</plugins>
@@ -103,7 +84,6 @@
 		<module>chukonu_springboot_websocket</module>
 		<module>chukonu_consul_api</module>
 		<module>chukonu_redis</module>
-		<module>chukonu_kafka</module>
 		<module>chukonu_springboot_kafka</module>
 		<module>chukonu_springcloud_eureka</module>
 		<module>chukonu-springsecurity</module>
