@@ -19,6 +19,7 @@
  */
 package com.yxy.chukonu.java.aws.sdk.s3.client.side.asymmetric.master.key;
 
+
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -37,11 +38,14 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
+import org.junit.Test;
+
 public class GenerateAsymmetricMasterKey {
     private static final String keyDir  = System.getProperty("java.io.tmpdir");
     private static final SecureRandom srand = new SecureRandom();
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void testKeyEquality() throws Exception {
         // Generate RSA key pair of 1024 bits
         KeyPair keypair = genKeyPair("RSA", 1024);
         // Save to file system
@@ -55,14 +59,14 @@ public class GenerateAsymmetricMasterKey {
                 .getPrivate().getEncoded()));
     }
 
-    public static KeyPair genKeyPair(String algorithm, int bitLength)
+    public KeyPair genKeyPair(String algorithm, int bitLength)
             throws NoSuchAlgorithmException {
         KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance(algorithm);
         keyGenerator.initialize(1024, srand);
         return keyGenerator.generateKeyPair();
     }
 
-    public static void saveKeyPair(String dir, KeyPair keyPair)
+    public void saveKeyPair(String dir, KeyPair keyPair)
             throws IOException {
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();

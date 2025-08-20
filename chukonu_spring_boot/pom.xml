@@ -25,6 +25,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.38</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
@@ -109,10 +114,10 @@
 					<repository>${docker.image.prefix}/${project.artifactId}</repository>
 					<tag>latest</tag>
 					<buildArgs>
-					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-					<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+						<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>
-					
+
 				</configuration>
 			</plugin>
 		</plugins>
