@@ -4,13 +4,15 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.source.level>1.8</java.source.level>
-		<java.target.level>1.8</java.target.level>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+		<docker.image.prefix>yexianyi</docker.image.prefix>
 	</properties>
-	<!-- <parent> <groupId>com.yxy</groupId> <artifactId>chukonu</artifactId> 
-		<version>0.0.1-SNAPSHOT</version> </parent> -->
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
