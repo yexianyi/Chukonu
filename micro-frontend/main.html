@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery 主应用 · 真正微前端</title>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <style>
+    .nav { padding: 15px; background: #2f4050; color: white; }
+    .nav button { margin: 0 10px; padding: 6px 14px; cursor: pointer; }
+    #subAppContainer {
+      margin-top: 20px;
+      padding: 20px;
+      min-height: 300px;
+      border: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+
+<div class="nav">
+  <h3>微前端主应用（jQuery）</h3>
+  <button id="loadApp1">加载子应用1</button>
+  <button id="loadApp2">加载子应用2</button>
+  <button id="unmount">卸载</button>
+</div>
+
+<div id="subAppContainer"></div>
+
+<script>
+// 微前端容器
+let currentApp = null;
+
+// 微前端加载器：加载子应用 UMD 模块
+async function loadMicroApp(appName, scriptUrl) {
+  // 卸载前一个
+  if (currentApp) {
+    currentApp.unmount();
+    currentApp = null;
+  }
+
+  // 动态加载子应用 JS（独立部署产物）
+  await $.getScript(scriptUrl);
+
+  // 子应用按微前端协议导出生命周期
+  const app = window[appName];
+  if (!app || !app.mount || !app.unmount) {
+    alert("不是标准微前端应用");
+    return;
+  }
+
+  currentApp = app;
+  app.mount("#subAppContainer");
+}
+
+// 卸载
+$("#unmount").click(() => {
+  if (currentApp) {
+    currentApp.unmount();
+    currentApp = null;
+  }
+});
+
+// 加载子应用
+$("#loadApp1").click(() => loadMicroApp("App1", "app1.js"));
+$("#loadApp2").click(() => loadMicroApp("App2", "app2.js"));
+</script>
+
+</body>
+</html>
