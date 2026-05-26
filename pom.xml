@@ -88,5 +88,6 @@
     <module>chukonu_sparql_gremlin</module>
     <module>chukonu-springboot-sso-saml-sp</module>
     <module>chukonu-springboot-modbus-tcp</module>
+    <module>chukonu-springboot-opcua</module>
   </modules>
 </project>
