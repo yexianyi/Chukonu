@@ -43,15 +43,6 @@ public class OpcUaServerConfig {
         config.setApplicationName(LocalizedText.english("Chukonu SpringBoot Simulation Server"));
         config.setApplicationUri("urn:yxy:chukonu:opcua:server");
 
-        // 2. 根据源码规范：手动构建标准的匿名用户策略 (UserTokenPolicy)
-        UserTokenPolicy anonymousPolicy = new UserTokenPolicy(
-            "anonymous",
-            UserTokenType.Anonymous,
-            null,
-            null,
-            null
-        );
-
         // 3. 根据源码规范：手动创建并装配底层标准的 EndpointConfiguration
         
         EndpointConfiguration endpointConfiguration = EndpointConfiguration.newBuilder()

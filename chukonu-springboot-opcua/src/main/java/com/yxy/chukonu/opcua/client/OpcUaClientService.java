@@ -36,9 +36,6 @@ public class OpcUaClientService implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // 核心修复 1：延时 3 秒启动，等待服务端安全 bind 端口完成
-        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
-
         log.info(">>>> [Client] 正在连接 OPC UA 服务端: {}", endpointUrl);
 
         try {
@@ -58,7 +55,6 @@ public class OpcUaClientService implements CommandLineRunner {
             // 创建订阅组
             UaSubscription subscription = client.getSubscriptionManager().createSubscription(1000.0).get();
 
-            // 核心修复 2：将节点标识符严格对齐为包含 "Devices." 前缀的完整 ID
             int nsIndex = 2; 
             NodeId tempNodeId = new NodeId(nsIndex, "Devices.Temperature");
             NodeId humidNodeId = new NodeId(nsIndex, "Devices.Humidity");

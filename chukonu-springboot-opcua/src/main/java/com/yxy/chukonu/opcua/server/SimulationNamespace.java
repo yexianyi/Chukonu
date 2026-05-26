@@ -37,7 +37,6 @@ public class SimulationNamespace extends ManagedNamespaceWithLifecycle {
     public SimulationNamespace(OpcUaServer server) {
         super(server, NAMESPACE_URI);
 
-        // 💥 完美契合底层：向 Milo 自带的生命周期管理器中追加我们的工业初始化逻辑
         getLifecycleManager().addLifecycle(new Lifecycle() {
             @Override
             public void startup() {
