@@ -1,0 +1,14 @@
+{
+  "name": "micro-front-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "bff": "cd bff-server && node index.js",
+    "main": "cd main-app && npm start",
+    "home": "cd app-home && npm start",
+    "user": "cd app-user && npm start",
+    "start": "concurrently \"npm run bff\" \"npm run main\" \"npm run home\" \"npm run user\""
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
