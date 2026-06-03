@@ -1,0 +1,11 @@
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+
+alarm:
+  exchange: alarm.exchange
+  queue: real.time.alarm.queue
+  routing-key: alarm.real.time
