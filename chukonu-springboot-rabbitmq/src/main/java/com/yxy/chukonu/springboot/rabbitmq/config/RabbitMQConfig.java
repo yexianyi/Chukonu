@@ -36,4 +36,5 @@ public class RabbitMQConfig {
                 .to(alarmExchange())
                 .with(routingKey);
     }
+    
 }
