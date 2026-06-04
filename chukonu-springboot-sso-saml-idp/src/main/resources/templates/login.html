@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAML IDP 登录</title>
+    <style>
+        .login-box {width: 400px;margin: 100px auto;padding: 20px;border: 1px solid #ccc;border-radius: 5px;}
+        .error {color: red;}
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>SAML IDP 统一登录</h2>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <form action="/idp/login" method="post">
+            <p>用户名：<input type="text" name="username" value="admin"></p>
+            <p>密&nbsp;&nbsp;&nbsp;码：<input type="password" name="password" value="123456"></p>
+            <p><button type="submit">登录</button></p>
+        </form>
+    </div>
+</body>
+</html>

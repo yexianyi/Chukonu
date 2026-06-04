@@ -1,0 +1,27 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /idp
+
+# SAML IDP 核心配置
+saml:
+  idp:
+    # IDP 实体ID（唯一标识）
+    entity-id: https://chukonu.yxy.com/idp
+    # 单点登录地址
+    sso-url: http://localhost:8080/idp/saml/sso
+    # 元数据暴露地址
+    metadata-url: http://localhost:8080/idp/saml/metadata
+    # 密钥库配置（用于签名SAML断言）
+    keystore:
+      path: classpath:keystore/idp.jks
+      password: 123456
+      key-alias: idp
+      key-password: 123456
+    # 断言有效期（秒）
+    assertion-life-time: 3600
+
+# Spring Security
+spring:
+  thymeleaf:
+    cache: false

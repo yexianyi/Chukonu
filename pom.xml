@@ -90,5 +90,6 @@
     <module>chukonu-springboot-modbus-tcp</module>
     <module>chukonu-springboot-opcua</module>
     <module>chukonu-springboot-rabbitmq</module>
+    <module>chukonu-springboot-sso-saml-idp</module>
   </modules>
 </project>
