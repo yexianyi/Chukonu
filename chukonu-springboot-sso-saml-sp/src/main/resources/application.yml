@@ -10,8 +10,3 @@ spring:
             entity-id: https://sp.chukonu.com
             assertingparty:
               metadata-uri: http://localhost:8080/idp/saml/metadata
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.security.saml2.provider.service.authentication: TRACE
-    org.opensaml: DEBUG
