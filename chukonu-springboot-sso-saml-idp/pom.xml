@@ -1,95 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
-        <relativePath/>
-    </parent>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.14</version>
+		<relativePath />
+	</parent>
 
-    <groupId>com.yxy.chukonu</groupId>
-    <artifactId>chukonu-springboot-sso-saml-idp</artifactId>
-    <version>1.0.0</version>
-    <name>chukonu-springboot-sso-saml-idp</name>
+	<groupId>com.yxy.chukonu</groupId>
+	<artifactId>chukonu-springboot-sso-saml-idp</artifactId>
+	<version>1.0.0</version>
+	<name>chukonu-springboot-sso-saml-idp</name>
 
-    <properties>
-        <java.version>25</java.version>
-        <saml-spring-boot.version>4.0.0</saml-spring-boot.version>
-        <opensaml.version>5.1.1</opensaml.version>
-    </properties>
+	<properties>
+		<java.version>25</java.version>
+		<saml-spring-boot.version>4.0.0</saml-spring-boot.version>
+		<opensaml.version>5.1.1</opensaml.version>
+	</properties>
 
-    <dependencies>
-        <!-- Spring Boot Core -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+	<dependencies>
+		<!-- Spring Boot Core -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
-        <!-- SAML 2.0 核心依赖 -->
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-saml-api</artifactId>
-            <version>${opensaml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-saml-impl</artifactId>
-            <version>${opensaml.version}</version>
-        </dependency>
+		<!-- SAML 2.0 核心依赖 -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-saml-api</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-saml-impl</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
 
-        <!-- XML 安全依赖 -->
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-xmlsec-api</artifactId>
-            <version>${opensaml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-xmlsec-impl</artifactId>
-            <version>${opensaml.version}</version>
-        </dependency>
+		<!-- XML 安全依赖 -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-xmlsec-api</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-xmlsec-impl</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
 
-        <!-- 工具类 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<!-- 工具类 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
-        <!-- 测试 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<!-- 测试 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>创建订单 - SAML SP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .success { color: #28a745; font-size: 18px; }
+        .forbidden { color: #dc3545; font-size: 18px; }
+        .back { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>订单创建</h1>
+    
+    <!-- 权限校验结果展示 -->
+    <div th:if="${status == 'success'}" class="success">
+        <p>✅ [[${message}]]</p>
+        <p>订单编号：[[${orderId}]]</p>
+    </div>
+    
+    <div th:if="${status == 'forbidden'}" class="forbidden">
+        <p>❌ [[${message}]]</p>
+    </div>
+
+    <div class="back">
+        <a href="/">返回首页</a>
+    </div>
+</body>
+</html>

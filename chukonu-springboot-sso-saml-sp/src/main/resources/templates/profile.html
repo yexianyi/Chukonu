@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息 - SAML SP</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #eee; border-radius: 4px; }
+        h2 { color: #007bff; }
+        .back { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>用户信息详情</h1>
+    
+    <!-- SAML IDP 统一身份信息 -->
+    <div class="section">
+        <h2>SAML IDP 统一身份信息</h2>
+        <p><strong>NameID（唯一标识）：</strong> [[${samlNameId}]]</p>
+        <p><strong>SAML 属性：</strong></p>
+        <ul>
+            <li th:each="entry : ${samlAttributes}">[[${entry.key}]]: [[${entry.value}]]</li>
+        </ul>
+    </div>
+
+    <!-- 本地系统用户信息 -->
+    <div class="section">
+        <h2>本地系统用户信息</h2>
+        <p><strong>本地用户名：</strong> [[${localUser.username}]]</p>
+        <p><strong>所属部门：</strong> [[${localUser.department}]]</p>
+        <p><strong>本地权限：</strong></p>
+        <ul>
+            <li th:each="perm : ${localUser.permissions}">[[${perm}]]</li>
+        </ul>
+    </div>
+
+    <div class="back">
+        <a href="/">返回首页</a>
+    </div>
+</body>
+</html>

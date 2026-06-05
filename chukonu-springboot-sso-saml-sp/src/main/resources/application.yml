@@ -1,20 +1,17 @@
 server:
-  port: 8080
-
-# ===================================================================
-# SAML 2.0 Relying Party (SP) 生产配置项 (Spring Boot 3.x 规范)
-# ===================================================================
+  port: 8090
+# context-path不用加
 spring:
   security:
     saml2:
       relyingparty:
-        registration: 
-          keycloak: # Registration ID
-            signing:
-              credentials:
-                # YAML 的数组表示法，对应之前的 [0]
-                - private-key-location: "classpath:sp-private.key"
-                  certificate-location: "classpath:sp-certificate.crt"
+        registration:
+          chukonu:
+            entity-id: https://sp.chukonu.com
             assertingparty:
-              # 注意：3.x 必须使用 assertingparty，旧版的 identityprovider 会报红
-              metadata-uri: "http://localhost:8081/realms/master/protocol/saml/descriptor"
+              metadata-uri: http://localhost:8080/idp/saml/metadata
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.saml2.provider.service.authentication: TRACE
+    org.opensaml: DEBUG

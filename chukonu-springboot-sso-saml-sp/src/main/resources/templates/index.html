@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAML SP 首页</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>欢迎访问 SAML 服务提供者（SP）</h1>
+    <p>当前状态：<span th:if="${#authentication == null}">未登录</span>
+               <span th:if="${#authentication != null}">已登录（用户：[[${#authentication.name}]]）</span></p>
+    
+    <!-- 未登录时显示登录按钮（触发SAML SSO） -->
+    <div th:if="${#authentication == null}">
+        <a href="/user" class="btn">点击通过 SAML IDP 登录</a>
+    </div>
+    
+    <!-- 已登录时显示功能入口 -->
+    <div th:if="${#authentication != null}">
+        <a href="/user/profile" class="btn">查看用户信息</a>
+        <a href="/order/create" class="btn">创建订单</a>
+        <a href="/saml2/logout" class="btn" style="background: #dc3545;">退出登录</a>
+    </div>
+</body>
+</html>

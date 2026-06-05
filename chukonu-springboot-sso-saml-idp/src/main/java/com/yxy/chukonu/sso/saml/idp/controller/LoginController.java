@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yxy.chukonu.sso.saml.idp.entity.SamlUser;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
  * 登录页面控制器
  */
 @Controller
+@RequestMapping
 public class LoginController {
 
     private final UserAuthService userAuthService;
@@ -24,6 +26,7 @@ public class LoginController {
         this.userAuthService = userAuthService;
     }
 
+    
     /**
      * 跳转登录页
      */
@@ -31,6 +34,7 @@ public class LoginController {
     public String loginPage() {
         return "login";
     }
+    
 
     /**
      * 登录提交处理
