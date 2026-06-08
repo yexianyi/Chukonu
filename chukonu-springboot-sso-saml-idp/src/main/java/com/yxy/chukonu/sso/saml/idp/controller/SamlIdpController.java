@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.UUID;
@@ -25,6 +27,7 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -74,6 +77,9 @@ public class SamlIdpController {
 
     @Value("${saml.idp.sso-url}")
     private String ssoUrl;
+    
+    @Value("${saml.idp.slo-url}")
+    private String sloUrl;
 
     private final String publicKey;
 
@@ -87,7 +93,7 @@ public class SamlIdpController {
     }
 
     /**
-     * SSO 登录接收端点
+     *  单点登录
      */
     @GetMapping("/sso")
     public void processSso(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -169,26 +175,50 @@ public class SamlIdpController {
     }
 
     /**
-     * SLO 单点登出端点
+     * 单点登出
      */
     @RequestMapping("/slo")
     public void processSlo(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String samlRequest = request.getParameter("SAMLRequest");
+        String relayState = request.getParameter("RelayState");
 
-        // 1. 销毁本地 IDP 会话
+        // 1. 强制销毁本地 IDP 认证中心会话
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
 
-        // 2. 如果是外部 SP 规范发起的登出通知
+        // 2. 如果携带了外部 SP 规范发起的退出通知报文
         if (samlRequest != null && !samlRequest.isBlank()) {
+            // A. 精准解析解压来自 SP 侧的标准 LogoutRequest 报文
+            LogoutRequest logoutRequest = parseLogoutRequest(samlRequest);
+            String spEntityId = logoutRequest.getIssuer().getValue();
+            String requestId = logoutRequest.getID();
+
+            // B. 动态在白名单映射中查询当前 SP 的 SLO 处理端点
+            // 如果 SP 采用扁平化全自定义路径，且未在静态 trusted-sps 属性中重构，则直接精准路由到 SP 的 /saml/slo/response
+            String targetSpSloResponseUrl = spTrustService.getSloUrlByEntityId(spEntityId);
+            if (targetSpSloResponseUrl == null || targetSpSloResponseUrl.isBlank()) {
+                // 兜底策略：根据标准规范计算或对接 SP 默认接收响应路径
+                targetSpSloResponseUrl = "http://localhost:8090/sp/saml/slo/response";
+            }
+
+            // C. 核心构建 OpenSAML 的标准单点登出响应容器
             XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
             LogoutResponseBuilder responseBuilder = (LogoutResponseBuilder) builderFactory.getBuilder(LogoutResponse.DEFAULT_ELEMENT_NAME);
             LogoutResponse logoutResponse = responseBuilder.buildObject();
             logoutResponse.setID("_" + UUID.randomUUID().toString());
             logoutResponse.setIssueInstant(Instant.now());
-            
+            logoutResponse.setDestination(targetSpSloResponseUrl);
+            // 绑定通信状态：证明该 Response 对应 SP 发起的哪一条 Request 
+            logoutResponse.setInResponseTo(requestId);
+
+            // 补充 Issuer 数据节点
+            Issuer issuer = (Issuer) builderFactory.getBuilder(Issuer.DEFAULT_ELEMENT_NAME).buildObject(Issuer.DEFAULT_ELEMENT_NAME);
+            issuer.setValue(idpEntityId);
+            logoutResponse.setIssuer(issuer);
+
+            // 状态填充状态码 SUCCESS
             StatusBuilder statusBuilder = (StatusBuilder) builderFactory.getBuilder(Status.DEFAULT_ELEMENT_NAME);
             Status status = statusBuilder.buildObject();
             StatusCodeBuilder statusCodeBuilder = (StatusCodeBuilder) builderFactory.getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
@@ -197,20 +227,41 @@ public class SamlIdpController {
             status.setStatusCode(statusCode);
             logoutResponse.setStatus(status);
 
-            Issuer issuer = (Issuer) builderFactory.getBuilder(Issuer.DEFAULT_ELEMENT_NAME).buildObject(Issuer.DEFAULT_ELEMENT_NAME);
-            issuer.setValue(idpEntityId);
-            logoutResponse.setIssuer(issuer);
+            // D. 🌟 核心密码学对线：使用 IDP 的私钥对登出回执进行强制签名（否则 SP 验证会直接拒绝）
+            java.security.PrivateKey cleanPrivKey = KeyStoreUtil.getPrivateKeyFromJks();
+            org.opensaml.security.credential.BasicCredential cleanCredential = new org.opensaml.security.credential.BasicCredential();
+            cleanCredential.setPrivateKey(cleanPrivKey);
 
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().println("<h3>单点登出成功！已为您安全广播并清理全部关联会话。</h3>");
+            Signature responseSignature = new org.opensaml.xmlsec.signature.impl.SignatureBuilder().buildObject();
+            responseSignature.setSigningCredential(cleanCredential);
+            responseSignature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+            responseSignature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+            logoutResponse.setSignature(responseSignature);
+
+            // 执行 DOM 树绑定与加签
+            Marshaller responseMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(logoutResponse);
+            responseMarshaller.marshall(logoutResponse);
+            Signer.signObject(responseSignature);
+
+            // E. 将生成的 LogoutResponse 转换成 Base64 字符串
+            String samlResponseBase64 = marshallAndBase64Encode(logoutResponse);
+
+            // F. 组装标准 Redirect 参数包，控制浏览器 302 重定向还给客户端应用（SP）
+            StringBuilder redirectUrl = new StringBuilder(targetSpSloResponseUrl);
+            redirectUrl.append("?SAMLResponse=").append(URLEncoder.encode(samlResponseBase64, StandardCharsets.UTF_8));
+            if (relayState != null && !relayState.isBlank()) {
+                redirectUrl.append("&RelayState=").append(URLEncoder.encode(relayState, StandardCharsets.UTF_8));
+            }
+
+            response.sendRedirect(redirectUrl.toString());
         } else {
-            response.setContentType("text/html;charset=UTF-8");
-            response.getWriter().println("<h3>本地退出成功。</h3>");
+            // 如果是非 SAML 协议流的直接本地退出触发，重定向回到登录页提示退出成功
+            response.sendRedirect(request.getContextPath() + "/login?logout=success");
         }
     }
 
     /**
-     * 🌟【需求实现】：发布全套完整的元数据配置文档（包含SLO与双绑定）
+     * 发布全套完整的元数据配置文档（包含SLO与双绑定）
      */
     @GetMapping("/metadata")
     public void metadata(HttpServletResponse response) throws Exception {
@@ -238,7 +289,7 @@ public class SamlIdpController {
         // SLO 登出端点元数据加入
         SingleLogoutService sloService = new org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceBuilder().buildObject();
         sloService.setBinding("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect");
-        sloService.setLocation(ssoUrl.replace("/sso", "/slo")); 
+        sloService.setLocation(sloUrl); 
         idpSsoDescriptor.getSingleLogoutServices().add(sloService);
         
         // 公钥证书声明
@@ -283,6 +334,32 @@ public class SamlIdpController {
 
         Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(element);
         return (AuthnRequest) unmarshaller.unmarshall(element);
+    }
+
+    /**
+     * 🌟【新增解密流组件】：专门处理 SP 发送过来的具备高压缩 Deflate 格式的 LogoutRequest 
+     */
+    private LogoutRequest parseLogoutRequest(String samlRequestBase64) throws Exception {
+        byte[] decodedBytes = Base64.getDecoder().decode(samlRequestBase64);
+        InputStream is;
+        try {
+            // 首先尝试使用带 header 的原生的解压方式去解 SP 端发出的 Redirect 信号
+            is = new InflaterInputStream(new ByteArrayInputStream(decodedBytes), new Inflater(true));
+            // 预读取测试以确保流可用，不报错则为解压成功
+            byte[] testBytes = is.readNBytes(1);
+            is = new InflaterInputStream(new ByteArrayInputStream(decodedBytes), new Inflater(true));
+        } catch (Exception e) {
+            // 如果报错则平级切回原生非压缩流读取
+            is = new ByteArrayInputStream(decodedBytes);
+        }
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document document = dbf.newDocumentBuilder().parse(is);
+        Element element = document.getDocumentElement();
+
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(element);
+        return (LogoutRequest) unmarshaller.unmarshall(element);
     }
 
     private Response buildSamlResponseContainer(String inResponseTo, String acsUrl) {

@@ -19,7 +19,7 @@ public class SecurityConfig {
             // 2. 配置路径放行规则
             .authorizeHttpRequests(auth -> auth
                 // 放行：GET/POST /login (自定义登录页)，以及 SAML 的两个核心接口
-                .requestMatchers("/login", "/saml/metadata", "/saml/sso").permitAll()
+                .requestMatchers("/login", "/saml/metadata", "/saml/sso", "/saml/slo").permitAll()
                 // 其他任何请求都需要经过认证（实际上，未登录的用户访问会被踢到 /login）
                 .anyRequest().authenticated()
             )

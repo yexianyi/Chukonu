@@ -10,6 +10,8 @@ saml:
     entity-id: https://idp.chukonu.com
     # 单点登录地址
     sso-url: http://localhost:8080/idp/saml/sso
+    # 单点退出地址
+    slo-url: http://localhost:8080/idp/saml/slo
     # 元数据暴露地址
     metadata-url: http://localhost:8080/idp/saml/metadata
     # 密钥库配置（用于签名SAML断言）
@@ -22,8 +24,8 @@ saml:
     assertion-life-time: 3600
     trusted-sps:
       - entity-id: "https://sp.chukonu.com"
-        acs-url: "http://localhost:8090/sp/saml/acs"
-        slo-url: "https://mock-sp1.example.com/SAML2/SLO"
+#        acs-url: "http://localhost:8090/sp/saml/acs" # sp-metadata 已提供
+#        slo-url: "http://localhost:8090/sp/saml/slo" # sp-metadata 已提供
         encryption-cert-path: "classpath:certs/sp_public.crt" # 可选：用于加密断言的SP公钥
 
 # Spring Security

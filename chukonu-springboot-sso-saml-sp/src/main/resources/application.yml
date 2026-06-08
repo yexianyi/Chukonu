@@ -33,12 +33,14 @@ spring:
                   
             # 4. 对接 IDP 端点及自定义 SLO 响应地址
             assertingparty:
-              entity-id: "https://chukonu.yxy.com/idp"
-              singlesignon:
-                url:  "http://localhost:8080/idp/saml/sso"
-              singlelogout:
-                url: "http://localhost:8080/idp/saml/slo"
-                response-url: "http://localhost:8090/sp/saml/slo/response"
+              metadata-uri: "http://localhost:8080/idp/saml/metadata"
+              # 以下内容在metadata中均有提供
+#              entity-id: "https://chukonu.yxy.com/idp"
+#              singlesignon:
+#                url:  "http://localhost:8080/idp/saml/sso"
+#              singlelogout:
+#                url: "http://localhost:8080/idp/saml/slo"
+#                response-url: "http://localhost:8090/sp/saml/slo/response"
                 
               # 验证 IDP 响应签名的公钥证书
               verification:
