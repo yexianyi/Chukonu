@@ -1,12 +1,46 @@
 server:
   port: 8090
-# context-path不用加
+  servlet:
+    context-path: /sp
+
 spring:
   security:
     saml2:
       relyingparty:
         registration:
-          chukonu:
+          chukonu: # 凭证注册ID：chukonu
+            # 1. SP 自身的唯一标识 (EntityID)
             entity-id: https://sp.chukonu.com
+            
+            # 2. ACS断言消费服务地址
+            acs:
+              location: "http://localhost:8090/sp/saml/acs"
+              binding: "POST"
+            # 2. SP SLO服务地址
+            singlelogout:
+              url: "http://localhost:8090/sp/saml/slo"
+              binding: "REDIRECT"
+              
+            # 3. 【解密与加签凭证】对应 IDP 传过来的 AES-256 断言解密私钥
+            decryption:
+              credentials:
+                - private-key-location: "classpath:keystore/sp_private.key"
+                  certificate-location: "classpath:certs/sp_public.crt"
+            signing:
+              credentials:
+                - private-key-location: "classpath:keystore/sp_private.key"
+                  certificate-location: "classpath:certs/sp_public.crt"
+                  
+            # 4. 对接 IDP 端点及自定义 SLO 响应地址
             assertingparty:
-              metadata-uri: http://localhost:8080/idp/saml/metadata
+              entity-id: "https://chukonu.yxy.com/idp"
+              singlesignon:
+                url:  "http://localhost:8080/idp/saml/sso"
+              singlelogout:
+                url: "http://localhost:8080/idp/saml/slo"
+                response-url: "http://localhost:8090/sp/saml/slo/response"
+                
+              # 验证 IDP 响应签名的公钥证书
+              verification:
+                credentials:
+                  - certificate-location: "classpath:certs/idp_public.crt"
