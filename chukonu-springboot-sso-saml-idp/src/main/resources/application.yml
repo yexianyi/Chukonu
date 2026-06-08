@@ -20,6 +20,11 @@ saml:
       key-password: 123456
     # 断言有效期（秒）
     assertion-life-time: 3600
+    trusted-sps:
+      - entity-id: "https://mock-sp1.example.com/shibboleth"
+        acs-url: "https://mock-sp1.example.com/SAML2/POST"
+        slo-url: "https://mock-sp1.example.com/SAML2/SLO"
+        encryption-cert-path: "classpath:certs/sp1_public.crt" # 可选：用于加密断言的SP公钥
 
 # Spring Security
 spring:
