@@ -32,3 +32,6 @@ saml:
 spring:
   thymeleaf:
     cache: false
+logging:
+  pattern:
+    console: "%msg%n"

@@ -3,8 +3,13 @@ package com.yxy.chukonu.sso.saml.sp.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
+import org.springframework.security.saml2.provider.service.metadata.OpenSaml4MetadataResolver;
+import org.springframework.security.saml2.provider.service.metadata.Saml2MetadataResolver;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistration;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,88 +24,70 @@ import jakarta.annotation.Resource;
 @Controller
 public class IndexController {
 
-    @Resource
-    private LocalUserService localUserService;
+	@Resource
+	private LocalUserService localUserService;
 
-    // 首页（跳转页面）
-    @GetMapping("/")
-    public String index() {
-        return "index"; // 对应templates/index.html
-    }
+	// 注入 SP 本身的 RelyingParty 注册仓库（用于读取 application.yml 的凭证配置）
+	@Resource
+	private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-    /**
-     * 用户信息页面（渲染profile.html）
-     */
-    @GetMapping("/user")
-    public String userProfile(@AuthenticationPrincipal Saml2AuthenticatedPrincipal samlPrincipal,
-                              Model model) {
-        if (samlPrincipal == null) {
-            return "redirect:/"; // 未登录则跳回首页
-        }
+	private final Saml2MetadataResolver metadataResolver = new OpenSaml4MetadataResolver();
 
-        // 1. SAML身份信息
-        String samlNameId = samlPrincipal.getName();
-        model.addAttribute("samlNameId", samlNameId);
-        model.addAttribute("samlAttributes", samlPrincipal.getAttributes());
+	// 首页（跳转页面）
+	@GetMapping("/")
+	public String index() {
+		return "index";
+	}
 
-        // 2. 本地用户信息
-        LocalUser localUser = localUserService.getLocalUserBySamlNameId(samlNameId);
-        if (localUser == null) {
-            localUser = localUserService.createDefaultLocalUser(samlNameId);
-        }
-        model.addAttribute("localUser", localUser);
+	
+	@GetMapping("/user")
+	public String profile(@AuthenticationPrincipal Saml2AuthenticatedPrincipal samlPrincipal, Model model) {
+	    if (samlPrincipal != null) {
+	        // 查询/创建本地用户
+	        LocalUser localUser = localUserService.getLocalUserBySamlNameId(samlPrincipal.getName());
+	        if (localUser == null) {
+	            localUser = localUserService.createDefaultLocalUser(samlPrincipal.getName());
+	        }
+	        model.addAttribute("localUser", localUser);
+	        model.addAttribute("samlNameId", samlPrincipal.getName());
+	        model.addAttribute("samlAttributes", samlPrincipal.getAttributes());
+	    }
+		return "profile";
+	}
+	
+	
+	/**
+	 * 显式实现 SP 端元数据暴露接口 访问路径：http://localhost:8090/sp/saml/metadata
+	 */
+	@GetMapping(value = "/saml/metadata", produces = MediaType.APPLICATION_XML_VALUE)
+	@ResponseBody
+	public String getSpMetadata() {
+		// 根据你 application.yml 里的注册 ID 'chukonu' 提取出完整的 SP 端基础配置
+		RelyingPartyRegistration registration = relyingPartyRegistrationRepository.findByRegistrationId("chukonu");
+		if (registration == null) {
+			throw new IllegalArgumentException("未找到凭证注册ID为 [chukonu] 的配置");
+		}
+		// 解析器会自动将你的 EntityID、ACS、证书等拼装成规范的标准 SAML2 元数据 XML 返回
+		return this.metadataResolver.resolve(registration);
+	}
 
-        return "profile"; // 对应templates/profile.html
-    }
 
-    /**
-     * 订单创建页面（渲染create-order.html）
-     */
-    @GetMapping("/order/create")
-    public String createOrder(@AuthenticationPrincipal Saml2AuthenticatedPrincipal samlPrincipal,
-                              Model model) {
-        Map<String, Object> result = new HashMap<>();
-        if (samlPrincipal == null) {
-            return "redirect:/"; // 未登录则跳回首页
-        }
-
-        // 1. 关联本地用户
-        LocalUser localUser = localUserService.getLocalUserBySamlNameId(samlPrincipal.getName());
-        if (localUser == null) {
-            model.addAttribute("status", "forbidden");
-            model.addAttribute("message", "本地无此用户，请联系管理员");
-            return "create-order";
-        }
-
-        // 2. 校验本地权限
-        if (localUser.getPermissions().contains("order:create")) {
-            model.addAttribute("status", "success");
-            model.addAttribute("message", "订单创建成功（用户：" + localUser.getUsername() + "）");
-            model.addAttribute("orderId", "ORD-" + System.currentTimeMillis());
-        } else {
-            model.addAttribute("status", "forbidden");
-            model.addAttribute("message", "无订单创建权限（用户：" + localUser.getUsername() + "）");
-        }
-
-        return "create-order"; // 对应templates/create-order.html
-    }
-
-    // 保留原有JSON接口（可选，用于API测试）
-    @GetMapping("/user/api")
-    @ResponseBody
-    public Map<String, Object> userApi(@AuthenticationPrincipal Saml2AuthenticatedPrincipal samlPrincipal) {
-        Map<String, Object> result = new HashMap<>();
-        if (samlPrincipal != null) {
-            result.put("NameID", samlPrincipal.getName());
-            result.put("Attributes", samlPrincipal.getAttributes());
-            LocalUser localUser = localUserService.getLocalUserBySamlNameId(samlPrincipal.getName());
-            if (localUser == null) {
-                localUser = localUserService.createDefaultLocalUser(samlPrincipal.getName());
-            }
-            result.put("LocalUser", localUser);
-        } else {
-            result.put("error", "未认证");
-        }
-        return result;
-    }
+	// 保留原有JSON接口（可选，用于API测试）
+	@GetMapping("/user/api")
+	@ResponseBody
+	public Map<String, Object> userApi(@AuthenticationPrincipal Saml2AuthenticatedPrincipal samlPrincipal) {
+		Map<String, Object> result = new HashMap<>();
+		if (samlPrincipal != null) {
+			result.put("NameID", samlPrincipal.getName());
+			result.put("Attributes", samlPrincipal.getAttributes());
+			LocalUser localUser = localUserService.getLocalUserBySamlNameId(samlPrincipal.getName());
+			if (localUser == null) {
+				localUser = localUserService.createDefaultLocalUser(samlPrincipal.getName());
+			}
+			result.put("LocalUser", localUser);
+		} else {
+			result.put("error", "未认证");
+		}
+		return result;
+	}
 }

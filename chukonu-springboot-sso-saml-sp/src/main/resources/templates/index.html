@@ -11,19 +11,21 @@
 </head>
 <body>
     <h1>欢迎访问 SAML 服务提供者（SP）</h1>
-    <p>当前状态：<span th:if="${#authentication == null}">未登录</span>
-               <span th:if="${#authentication != null}">已登录（用户：[[${#authentication.name}]]）</span></p>
+    <p>当前状态：
+		<span th:if="${#authentication == null}">未登录</span>
+               <span th:if="${#authentication != null}">已登录（用户：[[${#authentication.name}]]）</span>
+	</p>
     
     <!-- 未登录时显示登录按钮（触发SAML SSO） -->
     <div th:if="${#authentication == null}">
-        <a href="/user" class="btn">点击通过 SAML IDP 登录</a>
+        <a href="user" class="btn">点击通过 SAML IDP 登录</a>
     </div>
     
     <!-- 已登录时显示功能入口 -->
     <div th:if="${#authentication != null}">
-        <a href="/user/profile" class="btn">查看用户信息</a>
-        <a href="/order/create" class="btn">创建订单</a>
-        <a href="/saml2/logout" class="btn" style="background: #dc3545;">退出登录</a>
+        <a href="user" class="btn">查看用户信息</a>
+        <a href="order/create" class="btn">创建订单</a>
+        <a href="saml2/logout" class="btn" style="background: #dc3545;">退出登录</a>
     </div>
 </body>
 </html>

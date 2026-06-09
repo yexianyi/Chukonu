@@ -46,3 +46,8 @@ spring:
               verification:
                 credentials:
                   - certificate-location: "classpath:certs/idp_public.crt"
+logging:
+  pattern:
+    console: "%msg%n"
+  level:
+    root: debug

@@ -49,10 +49,10 @@ public class SpTrustService {
     }
 
     public boolean isTrustedSp(String entityId, String acsUrl) {
+    	// 暂时仅对entityId做校验，实际可以对acsUrl等一系列参数做校验
         SamlProperties.TrustedSp sp = spCache.get(entityId);
         if (sp == null) return false;
-        // 严格比对 ACS 地址，防止重定向钓鱼漏洞
-        return sp.getAcsUrl().equalsIgnoreCase(acsUrl);
+        return sp.getEntityId().equalsIgnoreCase(entityId);
     }
 
     public String getSloUrlByEntityId(String entityId) {
