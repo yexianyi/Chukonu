@@ -1,0 +1,50 @@
+services:
+  kafka:
+    image: apache/kafka:3.8.0
+    container_name: test-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /tmp/kraft-logs
+      KAFKA_CREATE_TOPICS: "raw-alert:1:1"
+    networks:
+      nodered-net:
+
+  # Node-RED 主服务
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red-kafka
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered-data:/data
+    # 安装kafka、tls https依赖包
+    command: >
+      sh -c "npm install node-red-contrib-kafka-node &&
+             npm install node-red-contrib-https-request &&
+             npm install node-red-contrib-tls-config &&
+             node-red"
+    environment:
+      TZ: Asia/Shanghai
+    depends_on:
+      - kafka
+    networks:
+      nodered-net:
+
+volumes:
+  kafka-data:
+  nodered-data: 
+
+networks:
+  nodered-net:
+    driver: bridge
