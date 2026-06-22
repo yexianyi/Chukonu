@@ -1,6 +1,0 @@
-input:
-  generate:
-    mapping: 'root = "hello world"'
-    interval: 1s
-output:
-  stdout: {}

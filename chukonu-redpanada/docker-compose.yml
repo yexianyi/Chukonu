@@ -1,39 +1,81 @@
+name: redpanda-quickstart-one-broker
+networks:
+  redpanda_network:
+    driver: bridge
+volumes:
+  redpanda-0: null
+
 services:
-  redpanda:
-    image: docker.io/redpandadata/redpanda:latest
+  # Benthos Studio：可视化拖拽UI（核心，满足你不用手写配置的需求）
+  benthos-studio:
+    image: jeffail/benthos-lab
+    ports:
+      - "8081:8080"
+    networks:
+      - redpanda_network
+    depends_on:
+      - redpanda-0
+
+  # Benthos/Redpanda Connect 运行引擎：执行Studio导出的流水线
+  redpanda-connect:
+    image: docker.redpanda.com/redpandadata/connect:latest
+    ports:
+      - "4195:4195"
+    volumes:
+      - ./pipeline.yaml:/config.yaml
+    command: run /config.yaml
+    networks:
+      - redpanda_network
+    depends_on:
+      - redpanda-0
+
+  redpanda-0:
     command:
-      - redpanda start
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda-0:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr internal://redpanda-0:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+      - --rpc-addr redpanda-0:33145
+      - --advertise-rpc-addr redpanda-0:33145
       - --mode dev-container
       - --smp 1
-      - --memory 1G
-      - --kafka-addr internal://0.0.0.0:19092,external://0.0.0.0:9092
-      - --advertise-kafka-addr internal://redpanda:19092,external://localhost:9092
-    ports:
-      - "9092:9092"
-    networks:
-      - redpanda_net
-
-  console:
-    image: docker.io/redpandadata/console:latest
-    ports:
-      - "8080:8080"
-    environment:
-      KAFKA_BROKERS: "redpanda:19092"
-    depends_on:
-      - redpanda
-    networks:
-      - redpanda_net
-
-  connect:
-    image: ghcr.io/redpanda-data/connect:latest
+      - --default-log-level=info
+    image: docker.redpanda.com/redpandadata/redpanda:v26.1.10
+    container_name: redpanda-0
     volumes:
-      - ./config.yaml:/config.yaml
-    command: ["run", "/config.yaml"]
-    depends_on:
-      - redpanda
+      - redpanda-0:/var/lib/redpanda/data
     networks:
-      - redpanda_net
+      - redpanda_network
+    ports:
+      - 18081:18081
+      - 18082:18082
+      - 19092:19092
+      - 19644:9644
 
-networks:
-  redpanda_net:
-    driver: bridge
+  # Redpanda控制台（查看本地Topic、Connect日志，辅助排查）
+  console:
+    container_name: redpanda-console
+    image: docker.redpanda.com/redpandadata/console:v3.7.4
+    networks:
+      - redpanda_network
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda-0:9092"]
+        schemaRegistry:
+          enabled: true
+          urls: ["http://redpanda-0:8081"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda-0:9644"]
+    ports:
+      - 8080:8080
+    depends_on:
+      - redpanda-0

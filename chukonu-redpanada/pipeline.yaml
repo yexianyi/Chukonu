@@ -1,0 +1,8 @@
+output:
+  kafka_franz:
+    seed_brokers: ["redpanda-0:9092"]
+    topic: alert_backup_topic
+redpanda:
+  seed_brokers: ["redpanda-0:9092"]
+  logs_topic: _redpanda.connect.logs
+  logs_level: info
