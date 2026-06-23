@@ -1,0 +1,9 @@
+1. Open a new Cmd window to compile traditional java app:
+	 mvn clean package "-DskipNativeBuild"
+2. Open a new Cmd window to compile graalvm java app:
+	mvn clean package -Pnative
+3. Run these two apps with their own windows:
+	For graalvm: ./target/graalvm-demo-app -Xmx512m -Xms512
+	For traditional java: java -Xmx512m -Xms512m -jar .\target\chukonu-springboot-graalvm-demo-1.0-SNAPSHOT.jar
+4. Call demo api and check log to get the running time consumption:
+	http://localhost:8080/api/process-data
